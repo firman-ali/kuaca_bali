@@ -1,16 +1,42 @@
-# kuaca_bali
+[![flutter platform](https://img.shields.io/badge/Platform-Flutter-yellow.svg)](https://flutter.io)
 
-Kuaca Bali make by Flutter as capstone dicoding project.
+# Kuaca Bali App
 
-## Getting Started
+This project is an application developed to complete a capstone assignment on a study in [Dicoding Indonesia](https://www.dicoding.com/)
 
-This project is a starting point for a Flutter application.
+## Introduction
 
-A few resources to get you started if this is your first Flutter project:
+This project was developed to be able to help people find Balinese traditional clothes more easily through smartphones. And also this application can be used as a booth for traditional clothing providers to market their products.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+In addition to helping people find traditional clothing more easily, this application can introduce to the public how the culture of Balinese traditional dress is.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Features
+
+Some of the design features that will be presented in this application are:
+
+- [ ] A slider to navigate through pages
+- [ ] Product List
+- [ ] Product Details
+- [ ] Booking
+- [ ] Chat
+- [ ] Filter
+- [ ] Booking History
+- [ ] Product Review
+- [ ] Notification
+- [ ] Admin Features
+
+Additional features that want to be presented in the application in the future
+
+- [ ] Nearby Store Recommended Features
+
+<br>
+
+## Project Scope
+
+This application will be developed on the Android platform using the Dart programming language and the Flutter framework. The limitation on this application is the language used in the application, the language used is Indonesian
+
+## Resource
+
+Some of the components that will be used in the application from open source are:
+
+- [unDraw](https://undraw.co/)
