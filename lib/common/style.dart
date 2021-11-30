@@ -7,6 +7,7 @@ ElevatedButtonThemeData elevatedButtonTheme = ElevatedButtonThemeData(
   style: ElevatedButton.styleFrom(
     onPrimary: onSecondary,
     primary: secondary300,
+    textStyle: textTheme.button,
   ),
 );
 
@@ -19,23 +20,23 @@ TextButtonThemeData textButtonTheme = TextButtonThemeData(
 TextTheme textTheme = TextTheme(
   headline1: GoogleFonts.firaSansCondensed(
     fontSize: 36,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
   ),
   headline2: GoogleFonts.firaSansCondensed(
     fontSize: 28,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
   ),
   headline3: GoogleFonts.firaSansCondensed(
     fontSize: 24,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
   ),
   headline4: GoogleFonts.firaSansCondensed(
     fontSize: 20,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
   ),
   headline5: GoogleFonts.firaSansCondensed(
     fontSize: 18,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
   ),
   headline6: GoogleFonts.firaSansCondensed(
     fontSize: 16,
@@ -47,22 +48,23 @@ TextTheme textTheme = TextTheme(
   ),
   subtitle2: GoogleFonts.firaSansCondensed(
     fontSize: 18,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
   ),
   bodyText1: GoogleFonts.publicSans(
     fontSize: 14,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.normal,
   ),
   bodyText2: GoogleFonts.publicSans(
     fontSize: 12,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.normal,
   ),
   button: GoogleFonts.publicSans(
+    color: onSecondary,
     fontSize: 18,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.bold,
   ),
   caption: GoogleFonts.publicSans(
     fontSize: 18,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
   ),
 );
