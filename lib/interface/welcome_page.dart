@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/common/constant.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:kuaca_bali/interface/login_page.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -39,42 +41,60 @@ class _WelcomePageState extends State<WelcomePage> {
     return Scaffold(
       backgroundColor: primary100,
       body: Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 28),
+        padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 28),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SafeArea(
-              child: SvgPicture.asset(
-                welcomeImageAsset,
-                width: MediaQuery.of(context).size.width,
+              child: FadeInDown(
+                child: SvgPicture.asset(
+                  welcomeImageAsset,
+                  width: MediaQuery.of(context).size.width,
+                ),
               ),
             ),
             Flexible(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  RichText(
-                    text: TextSpan(
-                      text: appTitle,
-                      style: Theme.of(context).textTheme.headline1,
-                      children: [
-                        TextSpan(
-                          text: appCaption,
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
-                      ],
+                  FadeInDown(
+                    child: RichText(
+                      text: TextSpan(
+                        text: appTitle,
+                        style: Theme.of(context).textTheme.headline1,
+                        children: [
+                          TextSpan(
+                            text: appCaption,
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text(registerButtonTitle),
+                      FadeInLeft(
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text(registerButtonTitle),
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(loginButtonTitle),
+                      FadeInRight(
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, LoginPage.routeName);
+                          },
+                          child: const Text(loginButtonTitle),
+                        ),
                       ),
                     ],
                   ),
