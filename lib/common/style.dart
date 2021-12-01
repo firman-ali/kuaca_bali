@@ -21,30 +21,37 @@ TextTheme textTheme = TextTheme(
   headline1: GoogleFonts.firaSansCondensed(
     fontSize: 36,
     fontWeight: FontWeight.w500,
+    color: onPrimaryBlack,
   ),
   headline2: GoogleFonts.firaSansCondensed(
     fontSize: 28,
     fontWeight: FontWeight.w500,
+    color: onPrimaryBlack,
   ),
   headline3: GoogleFonts.firaSansCondensed(
     fontSize: 24,
     fontWeight: FontWeight.w500,
+    color: onPrimaryBlack,
   ),
   headline4: GoogleFonts.firaSansCondensed(
     fontSize: 20,
     fontWeight: FontWeight.w500,
+    color: onPrimaryBlack,
   ),
   headline5: GoogleFonts.firaSansCondensed(
     fontSize: 18,
     fontWeight: FontWeight.w500,
+    color: onPrimaryBlack,
   ),
   headline6: GoogleFonts.firaSansCondensed(
     fontSize: 16,
     fontWeight: FontWeight.w500,
+    color: onPrimaryBlack,
   ),
   subtitle1: GoogleFonts.firaSansCondensed(
     fontSize: 20,
     fontWeight: FontWeight.w400,
+    color: onPrimaryBlack,
   ),
   subtitle2: GoogleFonts.firaSansCondensed(
     fontSize: 18,
@@ -64,7 +71,21 @@ TextTheme textTheme = TextTheme(
     fontWeight: FontWeight.bold,
   ),
   caption: GoogleFonts.publicSans(
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: FontWeight.w500,
+    color: onSurface,
   ),
+);
+
+InputDecorationTheme inputTheme = InputDecorationTheme(
+  filled: true,
+  fillColor: surface,
+  contentPadding: const EdgeInsets.all(0),
+  border: OutlineInputBorder(
+    borderSide: BorderSide.none,
+    borderRadius: BorderRadius.circular(10.0),
+  ),
+  labelStyle: textTheme.caption,
+  focusColor: primary300,
+  errorStyle: textTheme.bodyText1,
 );
