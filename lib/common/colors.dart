@@ -7,6 +7,7 @@ const secondary300 = Color.fromRGBO(107, 99, 255, 1);
 const secondary700 = Color.fromRGBO(69, 41, 225, 1);
 const surface = Colors.white;
 const background = Colors.white;
+const error = Colors.red;
 const onPrimaryWhite = Colors.white;
 const onPrimaryBlack = Colors.black;
 const onSecondary = Colors.white;
