@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/common/constant.dart';
+import 'package:kuaca_bali/interface/register_page.dart';
 import 'package:kuaca_bali/widget/custom_form_field.dart';
 import 'package:kuaca_bali/widget/custom_password_field.dart';
 
@@ -47,8 +48,10 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 children: [
                   Center(
-                    child: SvgPicture.asset(loginImageAsset,
-                        width: size.width * 0.7),
+                    child: SvgPicture.asset(
+                      loginImageAsset,
+                      width: size.width * 0.8,
+                    ),
                   ),
                   const SizedBox(height: 15),
                   FadeInUp(
@@ -110,7 +113,11 @@ class _LoginPageState extends State<LoginPage> {
                             TextSpan(
                               text: 'Daftar Disini!',
                               style: const TextStyle(color: secondary700),
-                              recognizer: TapGestureRecognizer()..onTap = () {},
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.pushNamed(
+                                      context, RegisterPage.routeName);
+                                },
                             ),
                           ],
                           style: Theme.of(context).textTheme.caption,

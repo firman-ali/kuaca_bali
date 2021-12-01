@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/interface/login_page.dart';
+import 'package:kuaca_bali/interface/register_page.dart';
 import 'package:kuaca_bali/interface/welcome_page.dart';
 
 import 'common/style.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       routes: {
         WelcomePage.routeName: (_) => const WelcomePage(),
         LoginPage.routeName: (_) => const LoginPage(),
+        RegisterPage.routeName: (_) => const RegisterPage(),
       },
     );
   }

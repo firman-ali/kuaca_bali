@@ -5,6 +5,7 @@ import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/common/constant.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:kuaca_bali/interface/login_page.dart';
+import 'package:kuaca_bali/interface/register_page.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -76,7 +77,10 @@ class _WelcomePageState extends State<WelcomePage> {
                     children: [
                       FadeInLeft(
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, RegisterPage.routeName);
+                          },
                           child: const Text(registerButtonTitle),
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all(
