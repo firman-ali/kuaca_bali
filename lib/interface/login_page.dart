@@ -64,17 +64,16 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: emailLabel,
                           textInputAction: TextInputAction.next,
                         ),
-                        const SizedBox(height: 15),
                         CustomPasswordField(
+                          marginTop: 15.0,
                           controller: passTextController,
                           prefixIcon: Icons.lock,
                           labelText: passLabel,
-                          suffix: true,
                         ),
                         TextButton(
                           onPressed: () {},
                           child: Text(
-                            'Lupa Password ?',
+                            forgetPassLabel,
                             style: GoogleFonts.publicSans(
                               fontSize: 16,
                               fontWeight: FontWeight.normal,
@@ -97,25 +96,26 @@ class _LoginPageState extends State<LoginPage> {
                                 );
                               }
                             },
-                            child: const Text('Submit'),
+                            child: const Text(loginButton),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 30),
                   FadeInUp(
-                    child: Center(
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(vertical: 30.0),
                       child: RichText(
                         text: TextSpan(
                           children: [
-                            const TextSpan(text: 'Belum Punya Akun? '),
+                            const TextSpan(text: dontHaveAccount),
                             TextSpan(
-                              text: 'Daftar Disini!',
+                              text: registerLabel,
                               style: const TextStyle(color: secondary700),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  Navigator.pushNamed(
+                                  Navigator.pushReplacementNamed(
                                       context, RegisterPage.routeName);
                                 },
                             ),
@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
