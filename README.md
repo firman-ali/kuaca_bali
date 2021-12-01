@@ -41,5 +41,5 @@ To see prototypes and mockups of applications made using figma [here](https://ww
 
 Some of the components that will be used in the application from open source are:
 
-- Illustration : [unDraw](https://undraw.co/), [DrawKit](https://drawkit.com/)
+- Illustration : [unDraw](https://undraw.co/), [StorySet](https://storyset.com/)
 - Font : [Google Fonts](https://fonts.google.com/)
