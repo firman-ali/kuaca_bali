@@ -1,4 +1,4 @@
-package com.example.kuaca_bali
+package com.kuacabali.android
 
 import io.flutter.embedding.android.FlutterActivity
 
