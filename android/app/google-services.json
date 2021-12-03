@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "164823633617",
+    "project_id": "kuaca-bali",
+    "storage_bucket": "kuaca-bali.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164823633617:android:2dc309e5046a8357463ff0",
+        "android_client_info": {
+          "package_name": "com.kuacabali.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "164823633617-4d48r139ngnvl1k0jc72419g80k8746q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0sx6BZDKyW-kX6zXtIW956WgjHIM9Uq4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164823633617-4d48r139ngnvl1k0jc72419g80k8746q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
