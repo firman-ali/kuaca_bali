@@ -3,6 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/common/constant.dart';
+import 'package:kuaca_bali/database/auth/auth_service.dart';
+import 'package:kuaca_bali/interface/home_page.dart';
 import 'package:kuaca_bali/interface/login_page.dart';
 import 'package:kuaca_bali/widget/custom_form_field.dart';
 import 'package:kuaca_bali/widget/custom_password_field.dart';
@@ -81,7 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         CustomFormField(
                           marginTop: 15.0,
-                          controller: nameTextController,
+                          controller: emailTextController,
                           labelText: emailLabel,
                           prefixIcon: Icons.email,
                           textInputAction: TextInputAction.next,
@@ -117,16 +119,24 @@ class _RegisterPageState extends State<RegisterPage> {
                         SizedBox(
                           width: size.width,
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      emailTextController.text +
-                                          passTextController.text,
-                                    ),
-                                  ),
-                                );
+                                try {
+                                  final result = await AuthService().signUp(
+                                    emailTextController.text,
+                                    passTextController.text,
+                                    nameTextController.text,
+                                    telpTextController.text,
+                                    addressTextController.text,
+                                  );
+                                  if (result != null) {
+                                    Navigator.pushReplacementNamed(
+                                        context, HomePage.routeName);
+                                  }
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(e.toString())));
+                                }
                               }
                             },
                             child: const Text(registerButton),

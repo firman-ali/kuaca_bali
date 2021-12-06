@@ -93,7 +93,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       ),
                       FadeInRight(
                         child: TextButton(
-                          onPressed: () {
+                          onPressed: () async {
                             Navigator.pushReplacementNamed(
                                 context, LoginPage.routeName);
                           },

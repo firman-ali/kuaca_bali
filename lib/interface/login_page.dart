@@ -6,6 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/common/constant.dart';
+import 'package:kuaca_bali/database/auth/auth_service.dart';
+import 'package:kuaca_bali/interface/home_page.dart';
 import 'package:kuaca_bali/interface/register_page.dart';
 import 'package:kuaca_bali/widget/custom_form_field.dart';
 import 'package:kuaca_bali/widget/custom_password_field.dart';
@@ -84,16 +86,21 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           width: size.width,
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      emailTextController.text +
-                                          passTextController.text,
-                                    ),
-                                  ),
-                                );
+                                try {
+                                  final result = await AuthService().signIn(
+                                    emailTextController.text,
+                                    passTextController.text,
+                                  );
+                                  if (result != null) {
+                                    Navigator.pushReplacementNamed(
+                                        context, HomePage.routeName);
+                                  }
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(e.toString())));
+                                }
                               }
                             },
                             child: const Text(loginButton),
