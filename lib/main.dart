@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         WelcomePage.routeName: (_) => const WelcomePage(),
         LoginPage.routeName: (_) => const LoginPage(),
         RegisterPage.routeName: (_) => const RegisterPage(),
-        HomePage.routeName: (_) => const HomePage(),
+        HomePage.routeName: (_) => HomePage(),
       },
     );
   }
