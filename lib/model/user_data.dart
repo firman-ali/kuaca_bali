@@ -14,6 +14,7 @@ class UserData {
     required this.address,
     required this.createdAt,
     required this.updatedAt,
+    required this.role,
   });
 
   final String name;
@@ -22,6 +23,7 @@ class UserData {
   final String address;
   final Timestamp createdAt;
   final Timestamp updatedAt;
+  final String role;
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         name: json["name"],
@@ -30,6 +32,7 @@ class UserData {
         address: json["address"],
         createdAt: json["createdAt"],
         updatedAt: json["updatedAt"],
+        role: json["role"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -39,5 +42,6 @@ class UserData {
         "address": address,
         "createdAt": createdAt,
         "updatedAt": updatedAt,
+        "role": role,
       };
 }

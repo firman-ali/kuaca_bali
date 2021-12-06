@@ -13,12 +13,15 @@ class AuthService {
       final createdAt = Timestamp.fromDate(DateTime.now());
       final updatedAt = Timestamp.fromDate(DateTime.now());
       final user = UserData(
-          name: name,
-          email: email,
-          phoneNumber: phoneNumber,
-          address: address,
-          createdAt: createdAt,
-          updatedAt: updatedAt);
+        name: name,
+        email: email,
+        phoneNumber: phoneNumber,
+        address: address,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        role: 'user',
+      );
+
       await _addUser(userCredential.user!.uid, user);
       return userCredential.user?.uid;
     } on FirebaseAuthException catch (e) {
