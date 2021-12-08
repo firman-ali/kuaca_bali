@@ -14,6 +14,7 @@ import 'package:kuaca_bali/interface/register_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
 import 'package:kuaca_bali/widget/custom_form_field.dart';
 import 'package:kuaca_bali/widget/custom_password_field.dart';
+import 'package:kuaca_bali/widget/loading.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -53,12 +54,7 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
                 children: [
-                  Center(
-                    child: SvgPicture.asset(
-                      loginImageAsset,
-                      width: size.width * 0.8,
-                    ),
-                  ),
+                  SvgPicture.asset(loginImageAsset),
                   const SizedBox(height: 15),
                   FadeInUp(
                     child: Column(
@@ -102,10 +98,11 @@ class _LoginPageState extends State<LoginPage> {
                                   );
                                   if (result == "success") {
                                     Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                PageNavigation()));
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const PageNavigation()),
+                                    );
                                   }
                                 } on FirebaseAuthException catch (e) {
                                   late String message;

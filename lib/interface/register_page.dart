@@ -10,6 +10,7 @@ import 'package:kuaca_bali/interface/login_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
 import 'package:kuaca_bali/widget/custom_form_field.dart';
 import 'package:kuaca_bali/widget/custom_password_field.dart';
+import 'package:kuaca_bali/widget/loading.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -123,29 +124,27 @@ class _RegisterPageState extends State<RegisterPage> {
                           width: size.width,
                           child: ElevatedButton(
                             onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                try {
-                                  final result =
-                                      await Provider.of<AuthProvider>(context,
-                                              listen: false)
-                                          .signUp(
-                                    emailTextController.text,
-                                    passTextController.text,
-                                    nameTextController.text,
-                                    telpTextController.text,
-                                    addressTextController.text,
-                                  );
-                                  if (result == "success") {
-                                    Navigator.pushReplacement(
+                              try {
+                                final result = await Provider.of<AuthProvider>(
                                         context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                PageNavigation()));
-                                  }
-                                } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(e.toString())));
+                                        listen: false)
+                                    .signUp(
+                                  emailTextController.text,
+                                  passTextController.text,
+                                  nameTextController.text,
+                                  telpTextController.text,
+                                  addressTextController.text,
+                                );
+                                if (result == "success") {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PageNavigation()));
                                 }
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(e.toString())));
                               }
                             },
                             child: const Text(registerButton),
