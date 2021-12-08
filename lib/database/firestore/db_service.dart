@@ -44,7 +44,7 @@ class DatabaseService {
       imageUrl: imageUrl,
       price: price,
       size: size,
-      sellerId: sellerId,
+      sellerId: sellerId!,
       createdAt: dateNow,
       updatedAt: dateNow,
     );

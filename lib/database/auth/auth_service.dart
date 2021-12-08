@@ -17,13 +17,9 @@ class AuthService {
           userCredential.user!.uid, name, email, phoneNumber, address);
       return userCredential.user?.uid;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        return 'The password provided is too weak.';
-      } else if (e.code == 'email-already-in-use') {
-        return 'The account already exists for that email.';
-      }
+      rethrow;
     } catch (e) {
-      return e.toString();
+      rethrow;
     }
   }
 
@@ -33,13 +29,9 @@ class AuthService {
           email: email, password: password);
       return userCredential.user?.uid;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        return 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        return 'Wrong password provided for that user.';
-      }
+      rethrow;
     } catch (e) {
-      return e.toString();
+      rethrow;
     }
   }
 
@@ -48,8 +40,8 @@ class AuthService {
     return 'User Log Out';
   }
 
-  String getUserId() {
-    return firebaseAuth.currentUser!.uid;
+  String? getUserId() {
+    return firebaseAuth.currentUser?.uid;
   }
 
   Future<UserData?> getUserDetail(String uid) async {
