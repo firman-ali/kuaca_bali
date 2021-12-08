@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/common/constant.dart';
 import 'package:kuaca_bali/database/auth/auth_service.dart';
+import 'package:kuaca_bali/helper/page_navigation_helper.dart';
 import 'package:kuaca_bali/interface/home_page.dart';
 import 'package:kuaca_bali/interface/login_page.dart';
+import 'package:kuaca_bali/provider/auth_provider.dart';
 import 'package:kuaca_bali/widget/custom_form_field.dart';
 import 'package:kuaca_bali/widget/custom_password_field.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -122,16 +125,22 @@ class _RegisterPageState extends State<RegisterPage> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 try {
-                                  final result = await AuthService().signUp(
+                                  final result =
+                                      await Provider.of<AuthProvider>(context,
+                                              listen: false)
+                                          .signUp(
                                     emailTextController.text,
                                     passTextController.text,
                                     nameTextController.text,
                                     telpTextController.text,
                                     addressTextController.text,
                                   );
-                                  if (result != null) {
-                                    Navigator.pushReplacementNamed(
-                                        context, HomePage.routeName);
+                                  if (result == "success") {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PageNavigation()));
                                   }
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(

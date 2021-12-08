@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,10 +8,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/common/constant.dart';
 import 'package:kuaca_bali/database/auth/auth_service.dart';
+import 'package:kuaca_bali/helper/page_navigation_helper.dart';
 import 'package:kuaca_bali/interface/home_page.dart';
 import 'package:kuaca_bali/interface/register_page.dart';
+import 'package:kuaca_bali/provider/auth_provider.dart';
 import 'package:kuaca_bali/widget/custom_form_field.dart';
 import 'package:kuaca_bali/widget/custom_password_field.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -89,14 +93,32 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 try {
-                                  final result = await AuthService().signIn(
+                                  final result =
+                                      await Provider.of<AuthProvider>(context,
+                                              listen: false)
+                                          .signIn(
                                     emailTextController.text,
                                     passTextController.text,
                                   );
-                                  if (result != null) {
-                                    Navigator.pushReplacementNamed(
-                                        context, HomePage.routeName);
+                                  if (result == "success") {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PageNavigation()));
                                   }
+                                } on FirebaseAuthException catch (e) {
+                                  late String message;
+                                  if (e.code == 'user-not-found') {
+                                    message = 'No user found for that email.';
+                                  } else if (e.code == 'wrong-password') {
+                                    message =
+                                        'Wrong password provided for that user.';
+                                  } else {
+                                    message = e.toString();
+                                  }
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(message)));
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(content: Text(e.toString())));
