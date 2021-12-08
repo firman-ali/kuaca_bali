@@ -46,29 +46,37 @@ class _WelcomePageState extends State<WelcomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SafeArea(
-              child: FadeInDown(
-                child: SvgPicture.asset(
-                  welcomeImageAsset,
-                  width: MediaQuery.of(context).size.width,
+            Expanded(
+              flex: 5,
+              child: SafeArea(
+                child: FadeInDown(
+                  child: SvgPicture.asset(
+                    welcomeImageAsset,
+                    width: MediaQuery.of(context).size.width,
+                  ),
                 ),
               ),
             ),
-            Flexible(
+            Expanded(
+              flex: 2,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   FadeInDown(
-                    child: RichText(
-                      text: TextSpan(
-                        text: appTitle,
-                        style: Theme.of(context).textTheme.headline1,
-                        children: [
-                          TextSpan(
-                            text: appCaption,
-                            style: Theme.of(context).textTheme.subtitle1,
-                          ),
-                        ],
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: RichText(
+                        text: TextSpan(
+                          text: appTitle,
+                          style: Theme.of(context).textTheme.headline1,
+                          children: [
+                            TextSpan(
+                              text: appCaption,
+                              style: Theme.of(context).textTheme.subtitle1,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
