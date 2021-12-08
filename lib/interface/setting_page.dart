@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kuaca_bali/helper/page_navigation_helper.dart';
+import 'package:kuaca_bali/interface/register_seller_page.dart';
 import 'package:kuaca_bali/interface/login_page.dart';
 import 'package:kuaca_bali/interface/welcome_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
@@ -15,11 +16,23 @@ class SettingPage extends StatelessWidget {
       body: Column(
         children: [
           Text('Setting Page'),
-          ElevatedButton(
-              onPressed: () {
-                Provider.of<AuthProvider>(context, listen: false).signOut();
-              },
-              child: Text('Sign Out'))
+          ListTile(
+            title: Row(
+              children: [
+                Text(
+                  'Buat Dagangan',
+                  style: Theme.of(context).textTheme.subtitle1,
+                )
+              ],
+            ),
+            onTap: () {
+              pushNewScreen(
+                context,
+                screen: RegisterSellerPage(),
+                withNavBar: false,
+              );
+            },
+          )
         ],
       ),
     );
