@@ -14,7 +14,7 @@ In addition to helping people find traditional clothing more easily, this applic
 
 Some of the design features that will be presented in this application are:
 
-- [ ] Authentication
+- [x] Authentication
 - [ ] Product List
 - [ ] Product Details
 - [ ] Booking
