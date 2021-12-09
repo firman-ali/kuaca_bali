@@ -33,35 +33,27 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> signIn(String email, String pass) async {
-    _state = ResultState.isLoading;
-    notifyListeners();
+  Future<void> signIn(String email, String pass) async {
     final result = await service.signIn(email, pass);
     if (result != null) {
       _isSignIn = true;
-      _state = ResultState.finished;
       notifyListeners();
-      return "success";
     } else {
-      _state = ResultState.finished;
-      return "error";
+      _isSignIn = false;
+      notifyListeners();
     }
   }
 
-  Future<String> signUp(String email, String pass, String name,
+  Future<void> signUp(String email, String pass, String name,
       String phoneNumber, String address) async {
-    _state = ResultState.isLoading;
-    notifyListeners();
     final result =
         await service.signUp(email, pass, name, phoneNumber, address);
     if (result != null) {
       _isSignIn = true;
-      _state = ResultState.finished;
       notifyListeners();
-      return "success";
     } else {
-      _state = ResultState.finished;
-      return "error";
+      _isSignIn = false;
+      notifyListeners();
     }
   }
 }
