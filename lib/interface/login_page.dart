@@ -89,14 +89,14 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 try {
-                                  final result =
-                                      await Provider.of<AuthProvider>(context,
-                                              listen: false)
-                                          .signIn(
+                                  final result = Provider.of<AuthProvider>(
+                                      context,
+                                      listen: false);
+                                  await result.signIn(
                                     emailTextController.text,
                                     passTextController.text,
                                   );
-                                  if (result == "success") {
+                                  if (result.isSignIn) {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(

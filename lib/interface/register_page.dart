@@ -125,17 +125,17 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: ElevatedButton(
                             onPressed: () async {
                               try {
-                                final result = await Provider.of<AuthProvider>(
-                                        context,
-                                        listen: false)
-                                    .signUp(
+                                final result = Provider.of<AuthProvider>(
+                                    context,
+                                    listen: false);
+                                await result.signUp(
                                   emailTextController.text,
                                   passTextController.text,
                                   nameTextController.text,
                                   telpTextController.text,
                                   addressTextController.text,
                                 );
-                                if (result == "success") {
+                                if (result.isSignIn) {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
