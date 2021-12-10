@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/helper/format_currency_helper.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
+import 'package:kuaca_bali/interface/detail_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
 import 'package:kuaca_bali/provider/list_data_provider.dart';
 import 'package:provider/provider.dart';
@@ -148,83 +149,97 @@ class HomePage extends StatelessWidget {
                         mainAxisSpacing: 20.0,
                       ),
                       itemBuilder: (context, index) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.network(
-                                      listData[index].imageUrl,
-                                      width: MediaQuery.of(context).size.width,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 10,
-                                    right: 10,
-                                    child: CircleAvatar(
-                                      backgroundColor: secondary700,
-                                      child: IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            Icons.bookmark,
-                                            color: onSecondary,
-                                          )),
-                                    ),
-                                  ),
-                                ],
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailPage(
+                                  dressId: listData[index].id,
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(listData[index].name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline5),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(Icons.store, color: primary300),
-                                          Text(
-                                            listData[index].storeName!,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1,
-                                          )
-                                        ],
+                            );
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 4,
+                                child: Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        listData[index].imageUrl,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        fit: BoxFit.cover,
                                       ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            CurrencyHelper.format(
-                                                listData[index].price),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1,
-                                          ),
-                                          Text(
-                                            "/Hari",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1,
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ],
+                                    ),
+                                    Positioned(
+                                      top: 10,
+                                      right: 10,
+                                      child: CircleAvatar(
+                                        backgroundColor: secondary700,
+                                        child: IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              Icons.bookmark,
+                                              color: onSecondary,
+                                            )),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            )
-                          ],
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(listData[index].name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(Icons.store,
+                                                color: primary300),
+                                            Text(
+                                              listData[index].storeName!,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1,
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              CurrencyHelper.format(
+                                                  listData[index].price),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1,
+                                            ),
+                                            Text(
+                                              "/Hari",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1,
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         );
                       },
                     );
