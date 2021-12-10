@@ -2,12 +2,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/database/auth/auth_service.dart';
+import 'package:kuaca_bali/database/firestore/db_service.dart';
 import 'package:kuaca_bali/helper/page_navigation_helper.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/interface/login_page.dart';
 import 'package:kuaca_bali/interface/register_page.dart';
 import 'package:kuaca_bali/interface/welcome_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
+import 'package:kuaca_bali/provider/list_data_provider.dart';
 import 'package:kuaca_bali/widget/loading.dart';
 import 'package:provider/provider.dart';
 import 'common/style.dart';
@@ -23,8 +25,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AuthProvider>(
-      create: (BuildContext context) => AuthProvider(service: AuthService()),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthProvider>(
+          create: (BuildContext context) =>
+              AuthProvider(service: AuthService()),
+        ),
+        ChangeNotifierProvider<ListDataProvider>(
+          create: (BuildContext context) =>
+              ListDataProvider(dbService: DatabaseService()),
+        ),
+      ],
       child: MaterialApp(
         theme: ThemeData(
           textTheme: textTheme,
