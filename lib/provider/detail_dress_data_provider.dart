@@ -4,10 +4,10 @@ import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/model/detail_data_model.dart';
 import 'package:kuaca_bali/model/user_data_model.dart';
 
-class ListDataProvider extends ChangeNotifier {
+class DetailDataProvider extends ChangeNotifier {
   DatabaseService dbService;
   String dressId;
-  ListDataProvider({
+  DetailDataProvider({
     required this.dbService,
     required this.dressId,
   }) {
