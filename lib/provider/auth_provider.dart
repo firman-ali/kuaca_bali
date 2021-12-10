@@ -41,11 +41,11 @@ class AuthProvider extends ChangeNotifier {
     final result = await service.signIn(email, pass);
     if (result != null) {
       _isSignIn = true;
-      notifyListeners();
     } else {
       _isSignIn = false;
-      notifyListeners();
     }
+    await _getUser();
+    notifyListeners();
   }
 
   Future<void> signUp(String email, String pass, String name,
@@ -54,11 +54,11 @@ class AuthProvider extends ChangeNotifier {
         await service.signUp(email, pass, name, phoneNumber, address);
     if (result != null) {
       _isSignIn = true;
-      notifyListeners();
     } else {
       _isSignIn = false;
-      notifyListeners();
     }
+    await _getUser();
+    notifyListeners();
   }
 
   Future<void> _getUser() async {

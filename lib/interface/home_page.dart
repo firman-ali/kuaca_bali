@@ -56,12 +56,22 @@ class HomePage extends StatelessWidget {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: Image.network(
-                                      userData.imageUrl!,
-                                      fit: BoxFit.cover,
-                                      width: 50.0,
-                                      height: 50.0,
-                                    ),
+                                    child: userData.imageUrl != null
+                                        ? Image.network(
+                                            userData.imageUrl!,
+                                            fit: BoxFit.cover,
+                                            width: 50.0,
+                                            height: 50.0,
+                                          )
+                                        : ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: Image.asset(
+                                              'assets/images/julian-wan-WNoLnJo7tS8-unsplash.jpg',
+                                              width: 50.0,
+                                              height: 50.0,
+                                            ),
+                                          ),
                                   ),
                                   const SizedBox(width: 10),
                                   Text(
