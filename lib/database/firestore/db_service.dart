@@ -11,13 +11,13 @@ import 'package:path/path.dart';
 class DatabaseService {
   final _collection = FirebaseFirestore.instance.collection('dresses');
 
-  Future<List<DressData>> getListData() async {
+  Future<List<ListDress>> getListData() async {
     final snapshot = await _collection.get();
-    List<DressData> _dressList = [];
+    List<ListDress> _dressList = [];
 
     for (var e in snapshot.docs) {
       final seller = await AuthService().getUserDetail(e['sellerId']);
-      final data = DressData.fromObject(e, seller!);
+      final data = ListDress.fromObject(e, seller!);
       _dressList.add(data);
     }
 
