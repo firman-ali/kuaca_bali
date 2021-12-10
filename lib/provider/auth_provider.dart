@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:kuaca_bali/database/auth/auth_service.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
+import 'package:kuaca_bali/model/user_data_model.dart';
 
 class AuthProvider extends ChangeNotifier {
   AuthService service;
@@ -10,7 +11,9 @@ class AuthProvider extends ChangeNotifier {
 
   late bool _isSignIn;
   late ResultState _state;
+  late UserData _user;
 
+  UserData get user => _user;
   bool get isSignIn => _isSignIn;
   ResultState get state => _state;
 
@@ -21,6 +24,7 @@ class AuthProvider extends ChangeNotifier {
     if (user == null) {
       _isSignIn = false;
     } else {
+      await _getUser();
       _isSignIn = true;
     }
     _state = ResultState.finished;
@@ -55,5 +59,10 @@ class AuthProvider extends ChangeNotifier {
       _isSignIn = false;
       notifyListeners();
     }
+  }
+
+  Future<void> _getUser() async {
+    final user = await service.getUserDetail(service.getUserId()!);
+    _user = user!;
   }
 }
