@@ -24,6 +24,34 @@ class DatabaseService {
     return _dressList;
   }
 
+  Future<List<ListDress>> getListDataQuery(String query) async {
+    final snapshotName =
+        await _collection.where('name', isGreaterThanOrEqualTo: query).get();
+    List<ListDress> _dressList = [];
+
+    for (var e in snapshotName.docs) {
+      final seller = await AuthService().getUserDetail(e['sellerId']);
+      final data = ListDress.fromObject(e, seller!);
+      _dressList.add(data);
+    }
+
+    return _dressList;
+  }
+
+  Future<List<ListDress>> getListDataFilter(String sort, bool desc) async {
+    final snapshotName =
+        await _collection.orderBy(sort, descending: desc).get();
+    List<ListDress> _dressList = [];
+
+    for (var e in snapshotName.docs) {
+      final seller = await AuthService().getUserDetail(e['sellerId']);
+      final data = ListDress.fromObject(e, seller!);
+      _dressList.add(data);
+    }
+
+    return _dressList;
+  }
+
   Future<DressDataElement> geDetailData(String id) async {
     final snapshot = await _collection.doc(id).get();
     final seller = await AuthService().getUserDetail(snapshot['sellerId']);
