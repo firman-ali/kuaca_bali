@@ -12,10 +12,12 @@ class AuthProvider extends ChangeNotifier {
   late bool _isSignIn;
   late ResultState _state;
   late UserData _user;
+  late String? _userName;
 
   UserData get user => _user;
   bool get isSignIn => _isSignIn;
   ResultState get state => _state;
+  String? get name => _userName;
 
   _checkAuthentication() async {
     _state = ResultState.isLoading;
@@ -64,5 +66,11 @@ class AuthProvider extends ChangeNotifier {
   Future<void> _getUser() async {
     final user = await service.getUserDetail(service.getUserId()!);
     _user = user!;
+    final dataName = user.name.split(" ").map((e) => e).toList();
+    if (dataName.elementAt(0).length > 2) {
+      _userName = dataName.elementAt(0);
+    } else {
+      _userName = dataName.elementAt(1);
+    }
   }
 }
