@@ -118,4 +118,20 @@ class DatabaseService {
         .firestore
         .clearPersistence();
   }
+
+  Future<void> addCart(String uId, String dressId) async {
+    await _collectionUserData
+        .doc(uId)
+        .collection("carts")
+        .add({"dressId": dressId, "addedAt": Timestamp.now()});
+  }
+
+  Future<void> removeCart(String uId, String cartId) async {
+    await _collectionUserData.doc(uId).collection("carts").doc(cartId).delete();
+  }
+
+  Future<void> clearCart(String uId) async {
+    final carts = await _collectionUserData.doc(uId).collection("carts").get();
+    carts.docs.clear();
+  }
 }
