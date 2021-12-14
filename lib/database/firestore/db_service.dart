@@ -9,10 +9,11 @@ import 'package:kuaca_bali/model/list_data_model.dart';
 import 'package:path/path.dart';
 
 class DatabaseService {
-  final _collection = FirebaseFirestore.instance.collection('dresses');
+  final _collectionData = FirebaseFirestore.instance.collection('dresses');
+  final _collectionUserData = FirebaseFirestore.instance.collection('users');
 
   Future<List<ListDress>> getListData() async {
-    final snapshot = await _collection.get();
+    final snapshot = await _collectionData.get();
     List<ListDress> _dressList = [];
 
     for (var e in snapshot.docs) {
@@ -25,8 +26,9 @@ class DatabaseService {
   }
 
   Future<List<ListDress>> getListDataQuery(String query) async {
-    final snapshotName =
-        await _collection.where('name', isGreaterThanOrEqualTo: query).get();
+    final snapshotName = await _collectionData
+        .where('name', isGreaterThanOrEqualTo: query)
+        .get();
     List<ListDress> _dressList = [];
 
     for (var e in snapshotName.docs) {
@@ -40,7 +42,7 @@ class DatabaseService {
 
   Future<List<ListDress>> getListDataFilter(String sort, bool desc) async {
     final snapshotName =
-        await _collection.orderBy(sort, descending: desc).get();
+        await _collectionData.orderBy(sort, descending: desc).get();
     List<ListDress> _dressList = [];
 
     for (var e in snapshotName.docs) {
@@ -53,7 +55,7 @@ class DatabaseService {
   }
 
   Future<DressDataElement> geDetailData(String id) async {
-    final snapshot = await _collection.doc(id).get();
+    final snapshot = await _collectionData.doc(id).get();
     final seller = await AuthService().getUserDetail(snapshot['sellerId']);
     DressDataElement _dressDetail =
         DressDataElement.fromObject(snapshot, seller!);
@@ -76,7 +78,7 @@ class DatabaseService {
       createdAt: dateNow,
       updatedAt: dateNow,
     );
-    await _collection.add(data.toObject());
+    await _collectionData.add(data.toObject());
     return "success";
   }
 
@@ -87,5 +89,33 @@ class DatabaseService {
     final uploadTask = await firebaseStorageRef.putFile(_imageFile);
     final url = await uploadTask.ref.getDownloadURL();
     return url;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchBookmarkList(
+      String uId) async {
+    return await _collectionUserData.doc(uId).collection("bookmarks").get();
+  }
+
+  Future<void> addBookmark(String uId, String dressId) async {
+    await _collectionUserData
+        .doc(uId)
+        .collection("bookmarks")
+        .add({"dressId": dressId, "addedAt": Timestamp.now()});
+  }
+
+  Future<void> removeBookmark(String uId, String bookId) async {
+    await _collectionUserData
+        .doc(uId)
+        .collection("bookmarks")
+        .doc(bookId)
+        .delete();
+  }
+
+  Future<void> clearBookmark(String uId) async {
+    final bookmark = await _collectionUserData
+        .doc(uId)
+        .collection("bookmarks")
+        .firestore
+        .clearPersistence();
   }
 }
