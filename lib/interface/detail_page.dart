@@ -216,6 +216,65 @@ class DetailPage extends StatelessWidget {
                             )
                           ],
                         ),
+                        SizedBox(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0)),
+                                      context: context,
+                                      builder: (context) {
+                                        return Container(
+                                          //height: 350,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.access_time,
+                                                      size: 35.0,
+                                                    ),
+                                                    Text(
+                                                      'Durasi Pemesanan',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 25.0),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    ElevatedButton(
+                                                        onPressed: () {},
+                                                        child: Icon(Icons
+                                                            .shopping_cart)),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              150.0),
+                                                      child: ElevatedButton(
+                                                          onPressed: () {},
+                                                          child: Text(
+                                                              'Lanjutkan Pesanan')),
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                },
+                                child: Text('Pesan Sekarang')),
+                          ],
+                        ),
                       ],
                     ),
                   ),
