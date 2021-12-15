@@ -12,12 +12,13 @@ class DressDataElement {
   late String description;
   late double rating;
   late int price;
+  late List<ListItemReview> listReview;
 
   late Timestamp createdAt;
   late Timestamp updatedAt;
 
-  DressDataElement.fromObject(
-      DocumentSnapshot<Map<String, dynamic>> data, UserData seller) {
+  DressDataElement.fromObject(DocumentSnapshot<Map<String, dynamic>> data,
+      UserData seller, QuerySnapshot<Map<String, dynamic>> reviews) {
     id = data.id;
     name = data['name'];
     imageUrl = data['imageUrl'];
@@ -30,5 +31,24 @@ class DressDataElement {
     storeName = seller.storeName;
     storeAddress = seller.storeAddress;
     sellerRegisterAt = seller.sellerRegisterAt;
+    listReview = reviews.docs.map((e) => ListItemReview.fromObject(e)).toList();
+  }
+}
+
+class ListItemReview {
+  late String id;
+  late String userName;
+  late String userId;
+  late String review;
+  late String orderId;
+  late double starPoint;
+
+  ListItemReview.fromObject(QueryDocumentSnapshot<Map<String, dynamic>> data) {
+    id = data.id;
+    userName = data['userName'];
+    userId = data['userId'];
+    review = data['review'];
+    orderId = data['orderId'];
+    starPoint = data['starPoint'].toDouble();
   }
 }
