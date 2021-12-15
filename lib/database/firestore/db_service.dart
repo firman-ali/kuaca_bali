@@ -55,10 +55,12 @@ class DatabaseService {
   }
 
   Future<DressDataElement> geDetailData(String id) async {
-    final snapshot = await _collectionData.doc(id).get();
-    final seller = await AuthService().getUserDetail(snapshot['sellerId']);
+    final snapshotData = await _collectionData.doc(id).get();
+    final snapshotReview =
+        await _collectionData.doc(id).collection("reviews").get();
+    final seller = await AuthService().getUserDetail(snapshotData['sellerId']);
     DressDataElement _dressDetail =
-        DressDataElement.fromObject(snapshot, seller!);
+        DressDataElement.fromObject(snapshotData, seller!, snapshotReview);
 
     return _dressDetail;
   }
