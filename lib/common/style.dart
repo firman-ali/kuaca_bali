@@ -5,10 +5,12 @@ import 'colors.dart';
 
 ElevatedButtonThemeData elevatedButtonTheme = ElevatedButtonThemeData(
   style: ElevatedButton.styleFrom(
-    onPrimary: onSecondary,
-    primary: secondary300,
-    textStyle: textTheme.button,
-  ),
+      onPrimary: onSecondary,
+      primary: secondary300,
+      textStyle: textTheme.button,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      )),
 );
 
 TextButtonThemeData textButtonTheme = TextButtonThemeData(
@@ -19,50 +21,50 @@ TextButtonThemeData textButtonTheme = TextButtonThemeData(
 
 TextTheme textTheme = TextTheme(
   headline1: GoogleFonts.firaSansCondensed(
-    fontSize: 36,
+    fontSize: 38,
     fontWeight: FontWeight.w500,
     color: onPrimaryBlack,
   ),
   headline2: GoogleFonts.firaSansCondensed(
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: FontWeight.w500,
     color: onPrimaryBlack,
   ),
   headline3: GoogleFonts.firaSansCondensed(
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: FontWeight.w500,
     color: onPrimaryBlack,
   ),
   headline4: GoogleFonts.firaSansCondensed(
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: FontWeight.w500,
     color: onPrimaryBlack,
   ),
   headline5: GoogleFonts.firaSansCondensed(
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: FontWeight.w500,
     color: onPrimaryBlack,
   ),
   headline6: GoogleFonts.firaSansCondensed(
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: FontWeight.w500,
     color: onPrimaryBlack,
   ),
   subtitle1: GoogleFonts.firaSansCondensed(
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: FontWeight.w400,
     color: onPrimaryBlack,
   ),
   subtitle2: GoogleFonts.firaSansCondensed(
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: FontWeight.w400,
   ),
   bodyText1: GoogleFonts.publicSans(
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: FontWeight.normal,
   ),
   bodyText2: GoogleFonts.publicSans(
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: FontWeight.normal,
   ),
   button: GoogleFonts.publicSans(
@@ -71,7 +73,7 @@ TextTheme textTheme = TextTheme(
     fontWeight: FontWeight.bold,
   ),
   caption: GoogleFonts.publicSans(
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: FontWeight.w500,
     color: onSurface,
   ),
