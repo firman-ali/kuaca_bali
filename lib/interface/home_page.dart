@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
                   return CustomScrollView(
                     slivers: [
                       SliverToBoxAdapter(
-                        child: titleBarWidget(context),
+                        child: titleBarWidget(context, snapshot),
                       ),
                       SliverPadding(
                         padding: const EdgeInsets.all(10.0),
@@ -62,18 +62,68 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget titleBarWidget(BuildContext context) {
+  Widget titleBarWidget(BuildContext context, ListDataProvider snapshot) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            'Cari Busana Adat Impianmu',
-            style: Theme.of(context).textTheme.headline3,
+          Expanded(
+            flex: 2,
+            child: Text(
+              'Cari Busana Adat Impianmu',
+              style: Theme.of(context).textTheme.headline3,
+            ),
           ),
-          ElevatedButton(onPressed: () {}, child: const Text('Filter'))
+          Expanded(child: listFilterButton(snapshot, context))
         ],
+      ),
+    );
+  }
+
+  Widget listFilterButton(ListDataProvider snapshot, BuildContext context) {
+    List<String> sort = [
+      'Semua',
+      'Produk Terbaru',
+      'Produk Terlama',
+      'Nama A-Z',
+      'Nama Z-A',
+      'Harga Termurah',
+      'Harga Termahal'
+    ];
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+      decoration: BoxDecoration(
+        color: secondary700,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          alignment: AlignmentDirectional.center,
+          hint: Text(
+            snapshot.sort,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText2
+                ?.copyWith(color: onSecondary),
+          ),
+          icon: const Icon(Icons.filter_alt),
+          iconSize: 18,
+          iconEnabledColor: onSecondary,
+          items: sort.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+                value: value,
+                child: Text(
+                  value,
+                  style: Theme.of(context).textTheme.bodyText2,
+                ));
+          }).toList(),
+          onChanged: (value) async {
+            await Provider.of<ListDataProvider>(context, listen: false)
+                .fetchDataSorting(value!);
+          },
+        ),
       ),
     );
   }
@@ -254,8 +304,36 @@ class HomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(snapshot.listData[index].name,
-                    style: Theme.of(context).textTheme.headline5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: Text(
+                        snapshot.listData[index].name,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ),
+                    Flexible(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            color: primary300,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            snapshot.listData[index].rating.toString(),
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -276,7 +354,7 @@ class HomePage extends StatelessWidget {
                     Flexible(
                       child: Text(
                         CurrencyHelper.format(snapshot.listData[index].price),
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.headline6,
                       ),
                     )
                   ],
