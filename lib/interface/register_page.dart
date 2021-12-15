@@ -3,14 +3,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/common/constant.dart';
-import 'package:kuaca_bali/database/auth/auth_service.dart';
 import 'package:kuaca_bali/helper/page_navigation_helper.dart';
-import 'package:kuaca_bali/interface/home_page.dart';
 import 'package:kuaca_bali/interface/login_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
 import 'package:kuaca_bali/widget/custom_form_field.dart';
 import 'package:kuaca_bali/widget/custom_password_field.dart';
-import 'package:kuaca_bali/widget/loading.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -53,9 +50,13 @@ class _RegisterPageState extends State<RegisterPage> {
         body: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Container(
+              width: size.width,
+              height: size.height,
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   SafeArea(
                     child: FadeInDown(
@@ -74,9 +75,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
                   FadeIn(
                     duration: const Duration(seconds: 1),
+                    delay: const Duration(milliseconds: 200),
                     child: Column(
                       children: [
                         CustomFormField(
@@ -86,93 +87,94 @@ class _RegisterPageState extends State<RegisterPage> {
                           textInputAction: TextInputAction.next,
                         ),
                         CustomFormField(
-                          marginTop: 15.0,
+                          marginTop: 20.0,
                           controller: emailTextController,
                           labelText: emailLabel,
                           prefixIcon: Icons.email,
                           textInputAction: TextInputAction.next,
                         ),
                         CustomPasswordField(
-                          marginTop: 15.0,
+                          marginTop: 20.0,
                           controller: passTextController,
                           labelText: passLabel,
                           prefixIcon: Icons.vpn_key,
                           textInputAction: TextInputAction.next,
                         ),
                         CustomPasswordField(
-                          marginTop: 15.0,
+                          marginTop: 20.0,
                           controller: confirmPassTextController,
                           labelText: confirmPassLabel,
                           prefixIcon: Icons.vpn_key,
                           textInputAction: TextInputAction.next,
                         ),
                         CustomFormField(
-                          marginTop: 15.0,
+                          marginTop: 20.0,
                           controller: telpTextController,
                           labelText: telpLabel,
                           prefixIcon: Icons.phone,
                           textInputAction: TextInputAction.next,
                         ),
                         CustomFormField(
-                          marginTop: 15.0,
+                          marginTop: 20.0,
                           controller: addressTextController,
                           labelText: addressLabel,
                           prefixIcon: Icons.add_location,
                         ),
-                        const SizedBox(height: 15),
-                        SizedBox(
-                          width: size.width,
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              try {
-                                final result = Provider.of<AuthProvider>(
-                                    context,
-                                    listen: false);
-                                await result.signUp(
-                                  emailTextController.text,
-                                  passTextController.text,
-                                  nameTextController.text,
-                                  telpTextController.text,
-                                  addressTextController.text,
-                                );
-                                if (result.isSignIn) {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              PageNavigation()));
-                                }
-                              } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(e.toString())));
-                              }
-                            },
-                            child: const Text(registerButton),
-                          ),
-                        ),
+                        // const SizedBox(height: 60.0),
+
+                        // const SizedBox(height: 60.0),
                       ],
                     ),
                   ),
+                  FadeIn(
+                    duration: const Duration(seconds: 1),
+                    delay: const Duration(milliseconds: 200),
+                    child: SizedBox(
+                      width: size.width,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          try {
+                            final result = Provider.of<AuthProvider>(context,
+                                listen: false);
+                            await result.signUp(
+                              emailTextController.text,
+                              passTextController.text,
+                              nameTextController.text,
+                              telpTextController.text,
+                              addressTextController.text,
+                            );
+                            if (result.isSignIn) {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PageNavigation()));
+                            }
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(e.toString())));
+                          }
+                        },
+                        child: const Text(registerButton),
+                      ),
+                    ),
+                  ),
                   FadeInUp(
-                    child: Container(
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.symmetric(vertical: 30.0),
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            const TextSpan(text: haveAccount),
-                            TextSpan(
-                              text: loginLabel,
-                              style: const TextStyle(color: secondary700),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Navigator.pushReplacementNamed(
-                                      context, LoginPage.routeName);
-                                },
-                            ),
-                          ],
-                          style: Theme.of(context).textTheme.caption,
-                        ),
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(text: haveAccount),
+                          TextSpan(
+                            text: loginLabel,
+                            style: const TextStyle(color: secondary700),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.pushReplacementNamed(
+                                    context, LoginPage.routeName);
+                              },
+                          ),
+                        ],
+                        style: Theme.of(context).textTheme.caption,
                       ),
                     ),
                   ),

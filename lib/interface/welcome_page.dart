@@ -42,7 +42,7 @@ class _WelcomePageState extends State<WelcomePage> {
     return Scaffold(
       backgroundColor: primary100,
       body: Padding(
-        padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 28),
+        padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 80.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -64,8 +64,8 @@ class _WelcomePageState extends State<WelcomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   FadeInDown(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.5,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.7,
                       child: RichText(
                         text: TextSpan(
                           text: appTitle,
@@ -100,14 +100,23 @@ class _WelcomePageState extends State<WelcomePage> {
                         ),
                       ),
                       FadeInRight(
-                        child: TextButton(
-                          onPressed: () async {
-                            Navigator.pushReplacementNamed(
-                                context, LoginPage.routeName);
-                          },
-                          child: const Text(loginButtonTitle),
+                          child: InkWell(
+                        onTap: () => Navigator.pushReplacementNamed(
+                            context, LoginPage.routeName),
+                        child: Row(
+                          children: [
+                            Text(
+                              loginButtonTitle,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .button
+                                  ?.copyWith(color: onPrimaryBlack),
+                            ),
+                            const SizedBox(width: 20),
+                            const Icon(Icons.arrow_forward_ios),
+                          ],
                         ),
-                      ),
+                      )),
                     ],
                   ),
                 ],
