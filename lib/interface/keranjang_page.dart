@@ -1,46 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Kuaca bali',
-      theme: ThemeData(),
-      home: KeranjangPage(),
-    );
-  }
-}
+import 'package:kuaca_bali/widget/page_bar.dart';
 
 class KeranjangPage extends StatelessWidget {
+  const KeranjangPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
         child: Column(
           children: [
-            SafeArea(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Keranjang',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
-                  ),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.home))
-                ],
-              ),
+            const PageBar(
+              mainPage: true,
+              title: 'Keranjang',
             ),
-            Container(
-              padding: EdgeInsets.all(10.0),
+            SizedBox(
               height: 350,
               child: Column(
                 children: [

@@ -9,7 +9,8 @@ import 'package:kuaca_bali/interface/login_page.dart';
 import 'package:kuaca_bali/interface/register_page.dart';
 import 'package:kuaca_bali/interface/welcome_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
-import 'package:kuaca_bali/provider/list_data_provider.dart';
+import 'package:kuaca_bali/provider/home_provider.dart';
+import 'package:kuaca_bali/provider/search_provider.dart';
 import 'package:kuaca_bali/widget/loading.dart';
 import 'package:provider/provider.dart';
 import 'common/style.dart';
@@ -31,10 +32,13 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) =>
               AuthProvider(service: AuthService()),
         ),
-        ChangeNotifierProvider<ListDataProvider>(
+        ChangeNotifierProvider<HomeProvider>(
           create: (BuildContext context) =>
-              ListDataProvider(dbService: DatabaseService()),
+              HomeProvider(dbService: DatabaseService()),
         ),
+        ChangeNotifierProvider<SearchProvider>(
+          create: (context) => SearchProvider(dbService: DatabaseService()),
+        )
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -44,7 +48,17 @@ class MyApp extends StatelessWidget {
           inputDecorationTheme: inputTheme,
           backgroundColor: background,
         ),
-        home: PageNavigation(),
+        home: Consumer<AuthProvider>(builder: (context, snapshot, _) {
+          if (snapshot.state == ResultState.isLoading) {
+            return const LoadingWidget();
+          } else {
+            if (snapshot.isSignIn) {
+              return PageRouter();
+            } else {
+              return const WelcomePage();
+            }
+          }
+        }),
         routes: {
           WelcomePage.routeName: (_) => const WelcomePage(),
           LoginPage.routeName: (_) => const LoginPage(),
