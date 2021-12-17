@@ -42,6 +42,7 @@ dependencies:
   firebase_storage: ^10.2.0
   persistent_bottom_nav_bar: ^4.0.2
   provider: ^6.0.1
+  multi_select_flutter: ^4.0.0
 
 dev_dependencies:
   flutter_test:
