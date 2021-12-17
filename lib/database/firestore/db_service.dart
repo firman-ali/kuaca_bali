@@ -26,26 +26,89 @@ class DatabaseService {
   }
 
   Future<List<ListDress>> getListDataQuery(String query) async {
-    final snapshotName = await _collectionData
-        .where('name', isGreaterThanOrEqualTo: query)
-        .get();
+    final filteredData = (await _collectionData.get()).docs.map((e) {
+      if (e
+          .data()['name']
+          .toString()
+          .toLowerCase()
+          .contains(query.toLowerCase())) {
+        return e;
+      }
+    }).toList();
+
     List<ListDress> _dressList = [];
 
-    for (var e in snapshotName.docs) {
-      final seller = await AuthService().getUserDetail(e['sellerId']);
-      final data = ListDress.fromObject(e, seller!);
-      _dressList.add(data);
+    for (var e in filteredData) {
+      if (e != null) {
+        final seller = await AuthService().getUserDetail(e['sellerId']);
+        final data = ListDress.fromObject(e, seller!);
+        _dressList.add(data);
+      }
     }
 
     return _dressList;
   }
 
-  Future<List<ListDress>> getListDataFilter(String sort, bool desc) async {
-    final snapshotName =
-        await _collectionData.orderBy(sort, descending: desc).get();
+  Future<List<ListDress>> getListDataFilter(
+    List<Map<String, String>> filterData,
+  ) async {
+    late QuerySnapshot<Map<String, dynamic>> snapshot;
+
+    switch (filterData.length) {
+      case 1:
+        if (filterData.first.keys.first.contains('semua')) {
+          snapshot = await _collectionData.get();
+        } else {
+          snapshot = snapshot = await _collectionData
+              .orderBy(filterData.first.keys.first.split(" ").first,
+                  descending:
+                      int.parse(filterData.first.keys.first.split(" ").last) ==
+                              0
+                          ? false
+                          : true)
+              .get();
+        }
+        break;
+      case 2:
+        snapshot = snapshot = await _collectionData
+            .orderBy(filterData.first.keys.first.split(" ").first,
+                descending:
+                    int.parse(filterData.first.keys.first.split(" ").last) == 0
+                        ? false
+                        : true)
+            .orderBy(filterData.last.keys.first.split(" ").first,
+                descending:
+                    int.parse(filterData.last.keys.first.split(" ").last) == 0
+                        ? false
+                        : true)
+            .get();
+        break;
+      case 3:
+        snapshot = snapshot = await _collectionData
+            .orderBy('price',
+                descending:
+                    int.parse(filterData[0].keys.first.split(" ").last) == 0
+                        ? false
+                        : true)
+            .orderBy('createdAt',
+                descending:
+                    int.parse(filterData[1].keys.first.split(" ").last) == 0
+                        ? false
+                        : true)
+            .orderBy('name',
+                descending:
+                    int.parse(filterData[2].keys.first.split(" ").last) == 0
+                        ? false
+                        : true)
+            .get();
+        break;
+      default:
+        snapshot = await _collectionData.get();
+    }
+
     List<ListDress> _dressList = [];
 
-    for (var e in snapshotName.docs) {
+    for (var e in snapshot.docs) {
       final seller = await AuthService().getUserDetail(e['sellerId']);
       final data = ListDress.fromObject(e, seller!);
       _dressList.add(data);
