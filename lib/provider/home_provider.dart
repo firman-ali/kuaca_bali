@@ -2,26 +2,33 @@ import 'package:flutter/cupertino.dart';
 import 'package:kuaca_bali/database/firestore/db_service.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/model/list_data_model.dart';
-import 'package:kuaca_bali/model/user_data_model.dart';
 
-class ListDataProvider extends ChangeNotifier {
+class HomeProvider extends ChangeNotifier {
   DatabaseService dbService;
-  ListDataProvider({required this.dbService}) {
+  HomeProvider({required this.dbService}) {
     _fetchAllData();
   }
 
+  final List<Map<String, String>> _filterItem = [
+    {'price 0': 'Termurah'},
+    {'price 1': 'Termahal'},
+    {'createdAt 1': 'Terbaru'},
+    {'createdAt 0': 'Terlama'},
+    {'name 0': 'Urutan A-Z'},
+    {'name 1': 'Urutan Z-A'},
+  ];
+
   List<ListDress> _listData = [];
   late ResultState _state;
-  late UserData _user;
-  late String _sortData;
+  List<Map<String, String>> _filterSelected = [];
 
-  UserData get user => _user;
   ResultState get state => _state;
   List<ListDress> get listData => _listData;
-  String get sort => _sortData;
+  List<Map<String, String>> get filterSelected => _filterSelected;
+  List<Map<String, String>> get filterItem => _filterItem;
 
   _fetchAllData() async {
-    _sortData = 'Semua';
+    _filterSelected.add({'semua': 'Semua'});
     _state = ResultState.isLoading;
     notifyListeners();
     try {
@@ -39,34 +46,13 @@ class ListDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchDataSorting(String sort) async {
-    _sortData = sort;
+  Future<void> fetchDataSorting() async {
     _state = ResultState.isLoading;
     notifyListeners();
     try {
       final List<ListDress> snapshot;
-      switch (sort) {
-        case 'Produk Terbaru':
-          snapshot = await dbService.getListDataFilter('createdAt', true);
-          break;
-        case 'Produk Terlama':
-          snapshot = await dbService.getListDataFilter('createdAt', false);
-          break;
-        case 'Harga Termurah':
-          snapshot = await dbService.getListDataFilter('price', false);
-          break;
-        case 'Harga Termahal':
-          snapshot = await dbService.getListDataFilter('price', true);
-          break;
-        case 'Nama A-Z':
-          snapshot = await dbService.getListDataFilter('name', false);
-          break;
-        case 'Nama Z-A':
-          snapshot = await dbService.getListDataFilter('name', true);
-          break;
-        default:
-          snapshot = await dbService.getListData();
-      }
+
+      snapshot = await dbService.getListDataFilter(_filterSelected);
 
       if (snapshot.isNotEmpty) {
         _listData = snapshot;
@@ -78,5 +64,18 @@ class ListDataProvider extends ChangeNotifier {
       _state = ResultState.isError;
     }
     notifyListeners();
+  }
+
+  set addItemFilter(List<Map<String, String>> values) {
+    _filterSelected = values;
+
+    if (_filterSelected.map((e) => e.containsKey('semua')).contains(true) &&
+        values.isNotEmpty) {
+      _filterSelected.removeAt(0);
+      _filterSelected.join(', ');
+    } else if (values.isEmpty) {
+      _filterSelected.add({'semua': 'Semua'});
+    }
+    fetchDataSorting();
   }
 }
