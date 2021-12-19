@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:kuaca_bali/database/auth/auth_service.dart';
 import 'package:kuaca_bali/model/add_data_model.dart';
+import 'package:kuaca_bali/model/bookmark_model.dart';
 import 'package:kuaca_bali/model/detail_data_model.dart';
 import 'package:kuaca_bali/model/list_data_model.dart';
 import 'package:path/path.dart';
@@ -156,23 +158,34 @@ class DatabaseService {
     return url;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> fetchBookmarkList(
-      String uId) async {
-    return await _collectionUserData.doc(uId).collection("bookmarks").get();
+  Future<List<Bookmark>> fetchBookmarkList(String uId) async {
+    final snapshot =
+        await _collectionUserData.doc(uId).collection("bookmarks").get();
+    return snapshot.docs.map((e) => Bookmark.fromObject(e)).toList();
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getBookmark(
+      String uId, String dressID) async {
+    return await _collectionUserData
+        .doc(uId)
+        .collection('bookmarks')
+        .doc(dressID)
+        .get();
   }
 
   Future<void> addBookmark(String uId, String dressId) async {
     await _collectionUserData
         .doc(uId)
         .collection("bookmarks")
-        .add({"dressId": dressId, "addedAt": Timestamp.now()});
+        .doc(dressId)
+        .set({"addedAt": Timestamp.now()});
   }
 
-  Future<void> removeBookmark(String uId, String bookId) async {
+  Future<void> removeBookmark(String uId, String dressId) async {
     await _collectionUserData
         .doc(uId)
         .collection("bookmarks")
-        .doc(bookId)
+        .doc(dressId)
         .delete();
   }
 
@@ -184,11 +197,13 @@ class DatabaseService {
         .clearPersistence();
   }
 
-  Future<void> addCart(String uId, String dressId) async {
+  Future<void> addCart(
+      String uId, String dressId, String date, int size) async {
     await _collectionUserData
         .doc(uId)
         .collection("carts")
-        .add({"dressId": dressId, "addedAt": Timestamp.now()});
+        .doc(dressId)
+        .set({"size": size, "orderPeriod": date, "addedAt": Timestamp.now()});
   }
 
   Future<void> removeCart(String uId, String cartId) async {
