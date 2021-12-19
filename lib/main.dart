@@ -9,6 +9,7 @@ import 'package:kuaca_bali/interface/login_page.dart';
 import 'package:kuaca_bali/interface/register_page.dart';
 import 'package:kuaca_bali/interface/welcome_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
+import 'package:kuaca_bali/provider/bookmark_provider.dart';
 import 'package:kuaca_bali/provider/home_provider.dart';
 import 'package:kuaca_bali/provider/search_provider.dart';
 import 'package:kuaca_bali/widget/loading.dart';
@@ -38,7 +39,11 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<SearchProvider>(
           create: (context) => SearchProvider(dbService: DatabaseService()),
-        )
+        ),
+        ChangeNotifierProvider<BookmarkProvider>(
+          create: (_) => BookmarkProvider(
+              dbService: DatabaseService(), authService: AuthService()),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(
