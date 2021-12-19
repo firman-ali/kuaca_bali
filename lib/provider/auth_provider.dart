@@ -29,7 +29,7 @@ class AuthProvider extends ChangeNotifier {
       await _getUser();
       _isSignIn = true;
     }
-    _state = ResultState.finished;
+    _state = ResultState.isSuccess;
     notifyListeners();
   }
 
