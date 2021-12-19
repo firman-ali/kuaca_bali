@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kuaca_bali/database/firestore/db_service.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/provider/search_provider.dart';
 import 'package:kuaca_bali/widget/page_bar.dart';
@@ -76,6 +75,40 @@ class SearchPage extends StatelessWidget {
   }
 
   Widget searchItems() {
-    return Text('Ini Test');
+    return Column(
+      children: [
+        Row(
+          children: [
+            Image.network(
+              'https://images.unsplash.com/photo-1595156210483-560123baba96?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
+              width: 100,
+              height: 100,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Nama Busana',
+                  style: TextStyle(fontSize: 20),
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.store),
+                    Text(
+                      'Nama Toko',
+                      style: TextStyle(fontSize: 20),
+                    )
+                  ],
+                ),
+                Text(
+                  'Rp.100.000',
+                  style: TextStyle(fontSize: 15),
+                )
+              ],
+            ),
+          ],
+        )
+      ],
+    );
   }
 }
