@@ -22,7 +22,7 @@ class HomeBar extends StatelessWidget {
               Consumer<AuthProvider>(
                 builder: (context, snapshot, child) {
                   if (snapshot.isSignIn &&
-                      snapshot.state == ResultState.finished) {
+                      snapshot.state == ResultState.isSuccess) {
                     return Row(
                       children: [
                         ClipRRect(
@@ -83,7 +83,7 @@ class HomeBar extends StatelessWidget {
                     onPressed: () {
                       pushNewScreen(
                         context,
-                        screen: SearchPage(),
+                        screen: const SearchPage(),
                         withNavBar: false,
                         pageTransitionAnimation: PageTransitionAnimation.fade,
                       );

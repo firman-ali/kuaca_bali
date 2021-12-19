@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
+import 'package:kuaca_bali/database/auth/auth_service.dart';
+import 'package:kuaca_bali/database/firestore/db_service.dart';
 import 'package:kuaca_bali/helper/format_currency_helper.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/interface/detail_page.dart';
+import 'package:kuaca_bali/provider/bookmark_provider.dart';
 import 'package:kuaca_bali/provider/home_provider.dart';
 import 'package:kuaca_bali/widget/home_bar.dart';
 import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
@@ -165,7 +169,9 @@ class HomePage extends StatelessWidget {
   Widget gridItemWidget(
       BuildContext context, HomeProvider snapshot, int index) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
+        await Provider.of<BookmarkProvider>(context, listen: false)
+            .getStatus(snapshot.listData[index].id);
         pushNewScreen(
           context,
           screen: DetailPage(
@@ -203,17 +209,7 @@ class HomePage extends StatelessWidget {
                   Positioned(
                     top: 10,
                     right: 10,
-                    child: CircleAvatar(
-                      backgroundColor: secondary700.withOpacity(0.8),
-                      radius: 18,
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.bookmark,
-                            size: 20,
-                            color: onSecondary,
-                          )),
-                    ),
+                    child: BookmarkButton(dressId: snapshot.listData[index].id),
                   ),
                 ],
               ),
@@ -284,6 +280,72 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class BookmarkButton extends StatefulWidget {
+  const BookmarkButton({Key? key, required this.dressId}) : super(key: key);
+
+  final String dressId;
+  @override
+  State<BookmarkButton> createState() => _BookmarkButtonState();
+}
+
+class _BookmarkButtonState extends State<BookmarkButton> {
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () async {
+      await Provider.of<BookmarkProvider>(context, listen: false)
+          .getStatus(widget.dressId);
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<BookmarkProvider>(
+      builder: (context, snapshot, child) {
+        return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          future: DatabaseService()
+              .getBookmark(AuthService().getUserId()!, widget.dressId),
+          builder: (context, snapshot2) {
+            if (snapshot2.data != null && snapshot2.data!.exists) {
+              return CircleAvatar(
+                backgroundColor: secondary700.withOpacity(0.8),
+                radius: 18,
+                child: IconButton(
+                  onPressed: () async {
+                    await Provider.of<BookmarkProvider>(context, listen: false)
+                        .removeBookmark(widget.dressId);
+                  },
+                  icon: const Icon(
+                    Icons.bookmark,
+                    size: 20,
+                    color: primary300,
+                  ),
+                ),
+              );
+            } else {
+              return CircleAvatar(
+                backgroundColor: secondary700.withOpacity(0.8),
+                radius: 18,
+                child: IconButton(
+                  onPressed: () async {
+                    await Provider.of<BookmarkProvider>(context, listen: false)
+                        .addBookmark(widget.dressId);
+                  },
+                  icon: const Icon(
+                    Icons.bookmark,
+                    size: 20,
+                    color: onSecondary,
+                  ),
+                ),
+              );
+            }
+          },
+        );
+      },
     );
   }
 }
