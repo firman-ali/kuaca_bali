@@ -1,24 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kuaca_bali/common/colors.dart';
+import 'package:kuaca_bali/helper/format_currency_helper.dart';
+import 'package:kuaca_bali/helper/state_helper.dart';
+import 'package:kuaca_bali/model/list_data_model.dart';
+import 'package:kuaca_bali/provider/bookmark_provider.dart';
+import 'package:kuaca_bali/widget/page_bar.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Kuaca bali',
-      theme: ThemeData(),
-      home: BookmarksPage(),
-    );
-  }
-}
+import 'detail_page.dart';
 
 class BookmarksPage extends StatelessWidget {
+  const BookmarksPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,24 +20,25 @@ class BookmarksPage extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            SafeArea(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Bookmarks',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
-                  ),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.home))
-                ],
-              ),
-            ),
-            ListView.builder(
-              itemBuilder: (context, index) {
-                return keranjangitem();
-              },
-              itemCount: 1,
+            const PageBar(mainPage: true, title: 'Bookmarks'),
+            Expanded(
+              child: Consumer<BookmarkProvider>(
+                  builder: (context, snapshot, child) {
+                if (snapshot.state == ResultState.hasData) {
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      return keranjangitem(context, snapshot.listData[index]);
+                    },
+                    itemCount: snapshot.listData.length,
+                  );
+                } else if (snapshot.state == ResultState.noData) {
+                  return const Text('No Data');
+                } else if (snapshot.state == ResultState.isLoading) {
+                  return const CircularProgressIndicator();
+                } else {
+                  return const Text('Error');
+                }
+              }),
             )
           ],
         ),
@@ -51,60 +46,73 @@ class BookmarksPage extends StatelessWidget {
     );
   }
 
-  Container keranjangitem() {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      height: 350,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Image.network(
-                'https://images.unsplash.com/photo-1614772903208-613ed4282ded?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80',
-                //width: 130.0,
-                //height: 130.0,
+  Widget keranjangitem(BuildContext context, ListDress data) {
+    return InkWell(
+      onTap: () => pushNewScreen(
+        context,
+        screen: DetailPage(
+          dressId: data.id,
+          imageUrl: data.imageUrl,
+        ),
+        withNavBar: false,
+        pageTransitionAnimation: PageTransitionAnimation.fade,
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        height: 140,
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.network(
+                data.imageUrl,
+                width: 150.0,
+                fit: BoxFit.cover,
               ),
-              SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.access_time,
-                        size: 25,
-                      ),
-                      Text(
-                        '1/01/2021 - 4/01/2021',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    'Nama Busana Adat',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.store,
-                        size: 25,
-                      ),
-                      Text(
-                        'Nama Toko',
-                        style: TextStyle(fontSize: 20),
-                      )
-                    ],
-                  ),
-                  Text(
-                    'Rp.100,000/Hari',
-                    style: TextStyle(fontSize: 25),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ],
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  data.name,
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.store,
+                      color: primary300,
+                      size: 20,
+                    ),
+                    Text(
+                      data.storeName!,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.location_on,
+                      color: primary300,
+                      size: 20,
+                    ),
+                    Text(
+                      data.storeAddress!,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ],
+                ),
+                Text(
+                  CurrencyHelper.format(data.price) + "/Hari",
+                  style: Theme.of(context).textTheme.headline6,
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

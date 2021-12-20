@@ -5,7 +5,9 @@ class DressDataElement {
   late String id;
   late String name;
   late String imageUrl;
+  late String sellerId;
   late String? sellerName;
+  late String? sellerImageUrl;
   late String? storeName;
   late String? storeAddress;
   late Timestamp? sellerRegisterAt;
@@ -27,7 +29,9 @@ class DressDataElement {
     price = data['price'].toInt();
     createdAt = data['createdAt'];
     updatedAt = data['updatedAt'];
+    sellerId = data['sellerId'];
     sellerName = seller.name;
+    sellerImageUrl = seller.imageUrl;
     storeName = seller.storeName;
     storeAddress = seller.storeAddress;
     sellerRegisterAt = seller.sellerRegisterAt;

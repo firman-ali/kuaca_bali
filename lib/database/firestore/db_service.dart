@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:kuaca_bali/database/auth/auth_service.dart';
 import 'package:kuaca_bali/model/add_data_model.dart';
 import 'package:kuaca_bali/model/bookmark_model.dart';
+import 'package:kuaca_bali/model/cart_data.dart';
 import 'package:kuaca_bali/model/detail_data_model.dart';
 import 'package:kuaca_bali/model/list_data_model.dart';
 import 'package:path/path.dart';
@@ -158,10 +158,22 @@ class DatabaseService {
     return url;
   }
 
-  Future<List<Bookmark>> fetchBookmarkList(String uId) async {
+  Future<List<ListDress>> fetchBookmarkList(String uId) async {
     final snapshot =
         await _collectionUserData.doc(uId).collection("bookmarks").get();
-    return snapshot.docs.map((e) => Bookmark.fromObject(e)).toList();
+    final listBookmark =
+        snapshot.docs.map((e) => Bookmark.fromObject(e)).toList();
+
+    final List<ListDress> _snapshotDetail = [];
+
+    for (var e in listBookmark) {
+      final result = await _collectionData.doc(e.dressId).get();
+      final seller = await AuthService().getUserDetail(result['sellerId']);
+      final data = ListDress.fromObject(result, seller!);
+      _snapshotDetail.add(data);
+    }
+
+    return _snapshotDetail;
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getBookmark(
@@ -190,11 +202,25 @@ class DatabaseService {
   }
 
   Future<void> clearBookmark(String uId) async {
-    final bookmark = await _collectionUserData
+    await _collectionUserData
         .doc(uId)
         .collection("bookmarks")
         .firestore
         .clearPersistence();
+  }
+
+  Future<List<CartData>> getCartList(String uId) async {
+    final snapshot =
+        await _collectionUserData.doc(uId).collection('carts').get();
+    List<CartData> cartList = [];
+    for (var e in snapshot.docs) {
+      final dreesData = await _collectionData.doc(e.id).get();
+      final seller =
+          await _collectionUserData.doc(dreesData.data()!['sellerId']).get();
+      cartList.add(CartData.fromObject(e, dreesData, seller));
+    }
+
+    return cartList;
   }
 
   Future<void> addCart(

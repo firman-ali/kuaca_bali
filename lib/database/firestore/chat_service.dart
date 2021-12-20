@@ -1,31 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kuaca_bali/database/auth/auth_service.dart';
+import 'package:kuaca_bali/model/user_data_model.dart';
 
 class ChatService {
   final _collectionUser = FirebaseFirestore.instance.collection('users');
   final _collectionChat = FirebaseFirestore.instance.collection('chats');
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getListChat(String uId) {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getListChatStream(String uId) {
     return _collectionUser.doc(uId).collection("chats").snapshots();
   }
 
-  Stream<DocumentSnapshot<Map<String, dynamic>>> friendData(String uId) {
+  Stream<DocumentSnapshot<Map<String, dynamic>>> friendDataStream(String uId) {
     return _collectionUser.doc(uId).snapshots();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> fetchChatData(String roomId) {
+  Future<UserData> getFriendData(String uId) async {
+    final snapshotData = await _collectionUser.doc(uId).get();
+    return UserData.fromObject(snapshotData);
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> fetchChatDataStream(
+      String roomId) {
     return _collectionChat
         .doc(roomId)
         .collection("messages")
-        .orderBy("cretaedAt", descending: true)
+        .orderBy("cretaedAt", descending: false)
         .snapshots();
   }
 
-  Future<void> addMessage(
-      String msg, String roomId, String uId, String friendId) async {
-    await _collectionChat
-        .doc(roomId)
-        .collection("messages")
-        .add({"msg": msg, "cretaedAt": Timestamp.now()});
+  Future<void> addMessage(String msg, String roomId, String friendId) async {
+    await _collectionChat.doc(roomId).collection("messages").add({
+      "msg": msg,
+      "cretaedAt": Timestamp.now(),
+      "fromId": AuthService().getUserId()
+    });
     final unRead = (await _collectionUser
             .doc(friendId)
             .collection("chats")
@@ -34,7 +42,7 @@ class ChatService {
         .data()?["unRead"] as int?;
 
     await _collectionUser.doc(friendId).collection("chats").doc(roomId).set({
-      "friendId": uId,
+      "friendId": AuthService().getUserId(),
       "unRead": (unRead ?? 0) + 1,
       "updatedAt": Timestamp.now()
     });
@@ -59,5 +67,14 @@ class ChatService {
         .collection('chats')
         .doc(roomId)
         .set({"unRead": 0});
+  }
+
+  Future<String?> getRoomFromUser(String uId) async {
+    final snapshot =
+        await _collectionChat.where('users', arrayContains: uId).get();
+    if (snapshot.docs.isNotEmpty) {
+      return snapshot.docs.first.id;
+    }
+    return null;
   }
 }

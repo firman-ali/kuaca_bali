@@ -17,7 +17,7 @@ class PageBar extends StatelessWidget {
           Row(
             children: [
               mainPage
-                  ? Container()
+                  ? const SizedBox()
                   : IconButton(
                       padding: EdgeInsets.zero,
                       alignment: Alignment.centerLeft,
@@ -33,7 +33,7 @@ class PageBar extends StatelessWidget {
               ),
             ],
           ),
-          const MenuButton()
+          mainPage ? const MenuButton() : const SizedBox()
         ],
       ),
     );

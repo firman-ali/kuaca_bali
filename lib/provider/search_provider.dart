@@ -28,7 +28,6 @@ class SearchProvider extends ChangeNotifier {
       }
     } catch (e) {
       _state = ResultState.isError;
-      print(e.toString());
     }
     notifyListeners();
   }

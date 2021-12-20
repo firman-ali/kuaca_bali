@@ -16,7 +16,7 @@ class AuthService {
       await _inputUserData(
           userCredential.user!.uid, name, email, phoneNumber, address);
       return userCredential.user?.uid;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       rethrow;
     } catch (e) {
       rethrow;
@@ -28,7 +28,7 @@ class AuthService {
       final userCredential = await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
       return userCredential.user?.uid;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       rethrow;
     } catch (e) {
       rethrow;

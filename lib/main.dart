@@ -10,8 +10,8 @@ import 'package:kuaca_bali/interface/register_page.dart';
 import 'package:kuaca_bali/interface/welcome_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
 import 'package:kuaca_bali/provider/bookmark_provider.dart';
+import 'package:kuaca_bali/provider/cart_provider.dart.dart';
 import 'package:kuaca_bali/provider/home_provider.dart';
-import 'package:kuaca_bali/provider/search_provider.dart';
 import 'package:kuaca_bali/widget/loading.dart';
 import 'package:provider/provider.dart';
 import 'common/style.dart';
@@ -37,11 +37,12 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) =>
               HomeProvider(dbService: DatabaseService()),
         ),
-        ChangeNotifierProvider<SearchProvider>(
-          create: (context) => SearchProvider(dbService: DatabaseService()),
-        ),
         ChangeNotifierProvider<BookmarkProvider>(
           create: (_) => BookmarkProvider(
+              dbService: DatabaseService(), authService: AuthService()),
+        ),
+        ChangeNotifierProvider<CartProvider>(
+          create: (_) => CartProvider(
               dbService: DatabaseService(), authService: AuthService()),
         ),
       ],

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserData {
   UserData({
+    this.id,
     required this.name,
     required this.email,
     required this.phoneNumber,
@@ -15,6 +16,7 @@ class UserData {
     this.sellerRegisterAt,
   });
 
+  final String? id;
   final String name;
   final String email;
   final String phoneNumber;
@@ -29,6 +31,7 @@ class UserData {
 
   factory UserData.fromObject(DocumentSnapshot<Map<String, dynamic>> data) =>
       UserData(
+        id: data.id,
         name: data["name"],
         email: data["email"],
         phoneNumber: data["phoneNumber"],
@@ -43,6 +46,7 @@ class UserData {
       );
 
   Map<String, dynamic> toObject() => {
+        "id": id,
         "name": name,
         "email": email,
         "phoneNumber": phoneNumber,

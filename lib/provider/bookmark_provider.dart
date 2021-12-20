@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kuaca_bali/database/auth/auth_service.dart';
 import 'package:kuaca_bali/database/firestore/db_service.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
-import 'package:kuaca_bali/model/bookmark_model.dart';
+import 'package:kuaca_bali/model/list_data_model.dart';
 
 class BookmarkProvider extends ChangeNotifier {
   DatabaseService dbService;
@@ -17,10 +17,10 @@ class BookmarkProvider extends ChangeNotifier {
   }
 
   late ResultState _state;
-  late List<Bookmark> _bookmarkList;
+  late List<ListDress> _bookmarkList;
   late bool _status;
 
-  List<Bookmark> get user => _bookmarkList;
+  List<ListDress> get listData => _bookmarkList;
   ResultState get state => _state;
   bool get status => _status;
 

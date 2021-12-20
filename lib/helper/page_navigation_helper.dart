@@ -1,16 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
-import 'package:kuaca_bali/helper/state_helper.dart';
-import 'package:kuaca_bali/interface/chats_page.dart';
+import 'package:kuaca_bali/interface/bookmarks_page.dart';
+import 'package:kuaca_bali/interface/list_chats_page.dart';
 import 'package:kuaca_bali/interface/home_page.dart';
 import 'package:kuaca_bali/interface/keranjang_page.dart';
 import 'package:kuaca_bali/interface/setting_page.dart';
-import 'package:kuaca_bali/interface/welcome_page.dart';
-import 'package:kuaca_bali/provider/auth_provider.dart';
-import 'package:kuaca_bali/widget/loading.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:provider/provider.dart';
 
 class PageRouter extends StatelessWidget {
   PageRouter({Key? key}) : super(key: key);
@@ -52,7 +48,7 @@ class PageRouter extends StatelessWidget {
   List<Widget> _buildScreens() {
     return [
       const HomePage(),
-      const HomePage(),
+      const BookmarksPage(),
       const ChatPage(),
       const KeranjangPage(),
       const SettingPage(),

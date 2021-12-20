@@ -1,24 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Kuaca bali',
-      theme: ThemeData(),
-      home: KeranjangPage(),
-    );
-  }
-}
+import 'package:kuaca_bali/common/colors.dart';
+import 'package:kuaca_bali/helper/date_range_format_helper.dart';
+import 'package:kuaca_bali/helper/format_currency_helper.dart';
+import 'package:kuaca_bali/helper/state_helper.dart';
+import 'package:kuaca_bali/interface/detail_page.dart';
+import 'package:kuaca_bali/model/cart_data.dart';
+import 'package:kuaca_bali/provider/cart_provider.dart.dart';
+import 'package:kuaca_bali/widget/page_bar.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
 class KeranjangPage extends StatelessWidget {
+  const KeranjangPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,24 +20,25 @@ class KeranjangPage extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            SafeArea(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Keranjang',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
-                  ),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.home))
-                ],
-              ),
-            ),
-            ListView.builder(
-              itemBuilder: (context, index) {
-                return keranjangitem();
-              },
-              itemCount: 1,
+            const PageBar(mainPage: true, title: 'Keranjang'),
+            Expanded(
+              child:
+                  Consumer<CartProvider>(builder: (context, snapshot, child) {
+                if (snapshot.state == ResultState.hasData) {
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      return keranjangitem(context, snapshot.cartList[index]);
+                    },
+                    itemCount: 1,
+                  );
+                } else if (snapshot.state == ResultState.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.state == ResultState.noData) {
+                  return const Center(child: Text("No Data"));
+                } else {
+                  return const Center(child: Text("Error"));
+                }
+              }),
             )
           ],
         ),
@@ -51,60 +46,91 @@ class KeranjangPage extends StatelessWidget {
     );
   }
 
-  Container keranjangitem() {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      height: 350,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Image.network(
-                'https://images.unsplash.com/photo-1614772903208-613ed4282ded?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80',
-                width: 130.0,
-                height: 130.0,
+  Widget keranjangitem(BuildContext context, CartData cartData) {
+    return InkWell(
+      onTap: () => pushNewScreen(
+        context,
+        screen:
+            DetailPage(dressId: cartData.dressId, imageUrl: cartData.imageUrl),
+        withNavBar: false,
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        height: 130.0,
+        child: Row(
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image.network(
+                  cartData.imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
-              SizedBox(width: 10),
-              Column(
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              flex: 3,
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(
-                        Icons.access_time,
-                        size: 25,
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.access_time,
+                            size: 20,
+                            color: primary300,
+                          ),
+                          Text(
+                            DateRangeHelper.format(cartData.orderPeriod),
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ],
                       ),
-                      Text(
-                        '1/01/2021 - 4/01/2021',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    'Nama Busana Adat',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.store,
-                        size: 25,
-                      ),
-                      Text(
-                        'Nama Toko',
-                        style: TextStyle(fontSize: 20),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 5.0),
+                        decoration: BoxDecoration(
+                          color: secondary300,
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Text(
+                          avatar[cartData.size],
+                          style: const TextStyle(color: onSecondary),
+                        ),
                       )
                     ],
                   ),
                   Text(
-                    'Rp.3,200.000',
-                    style: TextStyle(fontSize: 25),
+                    cartData.name,
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.store,
+                        color: primary300,
+                        size: 20,
+                      ),
+                      Text(
+                        cartData.storeName,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      )
+                    ],
+                  ),
+                  Text(
+                    CurrencyHelper.format(cartData.price),
+                    style: Theme.of(context).textTheme.headline5,
                   )
                 ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
