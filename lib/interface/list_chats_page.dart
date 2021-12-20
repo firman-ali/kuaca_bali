@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/database/firestore/chat_service.dart';
+import 'package:kuaca_bali/interface/chat_room_page.dart';
+import 'package:kuaca_bali/model/user_data_model.dart';
 import 'package:kuaca_bali/widget/page_bar.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -32,7 +35,8 @@ class ChatPage extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: ChatService().getListChat("M5m9i8Pkjih2RTgUbXGkCiHAl5x1"),
+              stream: ChatService()
+                  .getListChatStream("M5m9i8Pkjih2RTgUbXGkCiHAl5x1"),
               builder: (context, snapshot1) {
                 if (snapshot1.connectionState == ConnectionState.active) {
                   return Expanded(
@@ -58,7 +62,7 @@ class ChatPage extends StatelessWidget {
       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot1, int index) {
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
       stream: ChatService()
-          .friendData(snapshot1.data?.docs[index].data()["friendId"]),
+          .friendDataStream(snapshot1.data?.docs[index].data()["friendId"]),
       builder: (context, snapshot2) {
         if (snapshot2.connectionState == ConnectionState.active) {
           final date = DateTime.now()
@@ -76,7 +80,14 @@ class ChatPage extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 5.0),
             child: InkWell(
               onTap: () {
-                print(snapshot1.data?.docs[index].id);
+                pushNewScreen(
+                  context,
+                  screen: ChatRoomPage(
+                    roomId: snapshot1.data!.docs[index].id,
+                    friendData: UserData.fromObject(snapshot2.data!),
+                  ),
+                  withNavBar: false,
+                );
               },
               child: Material(
                 borderRadius: BorderRadius.circular(10),
@@ -123,7 +134,7 @@ class ChatPage extends StatelessWidget {
             ),
           );
         }
-        return Text('Ini snap 2 loading');
+        return const Text('Ini snap 2 loading');
       },
     );
   }
