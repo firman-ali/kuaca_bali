@@ -59,7 +59,7 @@ class ChatRoomPage extends StatelessWidget {
         crossAxisAlignment: aligment,
         children: [
           Text(
-            DateHelper.format(data.cretaedAt),
+            DateHelper.formatDateTime(data.cretaedAt),
             style: Theme.of(context).textTheme.bodyText2,
           ),
           Text(

@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
+import 'package:kuaca_bali/database/auth/auth_service.dart';
 import 'package:kuaca_bali/database/firestore/chat_service.dart';
 import 'package:kuaca_bali/interface/chat_room_page.dart';
 import 'package:kuaca_bali/model/user_data_model.dart';
+import 'package:kuaca_bali/widget/custom_error_widget.dart';
+import 'package:kuaca_bali/widget/menu_button.dart';
 import 'package:kuaca_bali/widget/page_bar.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -20,6 +23,7 @@ class ChatPage extends StatelessWidget {
             const PageBar(
               mainPage: true,
               title: 'Chats',
+              menuButton: MenuButtonChat(),
             ),
             const SizedBox(height: 25.0),
             TextField(
@@ -34,23 +38,27 @@ class ChatPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20.0),
-            StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: ChatService()
-                  .getListChatStream("M5m9i8Pkjih2RTgUbXGkCiHAl5x1"),
-              builder: (context, snapshot1) {
-                if (snapshot1.connectionState == ConnectionState.active) {
-                  return Expanded(
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      itemCount: snapshot1.data?.docs.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return chatTile(snapshot1, index);
-                      },
-                    ),
-                  );
-                }
-                return const CircularProgressIndicator();
-              },
+            Expanded(
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream:
+                    ChatService().getListChatStream(AuthService().getUserId()!),
+                builder: (context, snapshot1) {
+                  if (snapshot1.connectionState == ConnectionState.active) {
+                    if (snapshot1.data!.docs.isNotEmpty) {
+                      return ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: snapshot1.data?.docs.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return chatTile(snapshot1, index);
+                        },
+                      );
+                    } else {
+                      return const CustomError(errorStatus: Status.empty);
+                    }
+                  }
+                  return const CircularProgressIndicator();
+                },
+              ),
             ),
           ],
         ),
@@ -87,7 +95,15 @@ class ChatPage extends StatelessWidget {
                     friendData: UserData.fromObject(snapshot2.data!),
                   ),
                   withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.scale,
                 );
+                if (unRead > 0) {
+                  ChatService().readMsg(
+                    AuthService().getUserId()!,
+                    snapshot1.data!.docs[index].id,
+                    snapshot1.data?.docs[index].data()["friendId"],
+                  );
+                }
               },
               child: Material(
                 borderRadius: BorderRadius.circular(10),
@@ -104,7 +120,22 @@ class ChatPage extends StatelessWidget {
                     ),
                     radius: 30,
                   ),
-                  title: Text(snapshot2.data?.data()?["name"]),
+                  title: Text(
+                    snapshot2.data?.data()?["name"],
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  subtitle: snapshot2.data?.data()?["storeName"] != null
+                      ? Row(
+                          children: [
+                            const Icon(Icons.store,
+                                color: primary300, size: 20),
+                            Text(
+                              snapshot2.data?.data()?["storeName"],
+                              style: Theme.of(context).textTheme.bodyText1,
+                            )
+                          ],
+                        )
+                      : null,
                   trailing: unRead > 0
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,

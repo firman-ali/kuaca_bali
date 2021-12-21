@@ -26,7 +26,7 @@ class HomeBar extends StatelessWidget {
                     return Row(
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(20),
                           child: snapshot.user.imageUrl != null
                               ? Image.network(
                                   snapshot.user.imageUrl!,
@@ -35,7 +35,7 @@ class HomeBar extends StatelessWidget {
                                   height: 50.0,
                                 )
                               : ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(20),
                                   child: Image.asset(
                                     'assets/images/julian-wan-WNoLnJo7tS8-unsplash.jpg',
                                     width: 50.0,
@@ -94,7 +94,7 @@ class HomeBar extends StatelessWidget {
                       color: onSurface,
                     ),
                   ),
-                  const MenuButton()
+                  const MenuButtonHome()
                 ],
               )
             ],

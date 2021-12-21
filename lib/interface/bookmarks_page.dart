@@ -4,6 +4,9 @@ import 'package:kuaca_bali/helper/format_currency_helper.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/model/list_data_model.dart';
 import 'package:kuaca_bali/provider/bookmark_provider.dart';
+import 'package:kuaca_bali/widget/custom_error_widget.dart';
+import 'package:kuaca_bali/widget/loading.dart';
+import 'package:kuaca_bali/widget/menu_button.dart';
 import 'package:kuaca_bali/widget/page_bar.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +23,11 @@ class BookmarksPage extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            const PageBar(mainPage: true, title: 'Bookmarks'),
+            const PageBar(
+              mainPage: true,
+              title: 'Bookmarks',
+              menuButton: MenuButtonBookmark(),
+            ),
             Expanded(
               child: Consumer<BookmarkProvider>(
                   builder: (context, snapshot, child) {
@@ -32,11 +39,11 @@ class BookmarksPage extends StatelessWidget {
                     itemCount: snapshot.listData.length,
                   );
                 } else if (snapshot.state == ResultState.noData) {
-                  return const Text('No Data');
+                  return const CustomError(errorStatus: Status.empty);
                 } else if (snapshot.state == ResultState.isLoading) {
-                  return const CircularProgressIndicator();
+                  return const LoadingWidget();
                 } else {
-                  return const Text('Error');
+                  return const CustomError(errorStatus: Status.error);
                 }
               }),
             )

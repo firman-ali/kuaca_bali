@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/interface/bookmarks_page.dart';
+import 'package:kuaca_bali/interface/cart_page.dart';
 import 'package:kuaca_bali/interface/list_chats_page.dart';
 import 'package:kuaca_bali/interface/home_page.dart';
-import 'package:kuaca_bali/interface/keranjang_page.dart';
 import 'package:kuaca_bali/interface/setting_page.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -50,7 +50,7 @@ class PageRouter extends StatelessWidget {
       const HomePage(),
       const BookmarksPage(),
       const ChatPage(),
-      const KeranjangPage(),
+      const CartPage(),
       const SettingPage(),
     ];
   }

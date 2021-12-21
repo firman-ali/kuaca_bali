@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'menu_button.dart';
 
 class PageBar extends StatelessWidget {
-  const PageBar({Key? key, required this.mainPage, required this.title})
+  const PageBar(
+      {Key? key, required this.mainPage, required this.title, this.menuButton})
       : super(key: key);
 
   final bool mainPage;
   final String title;
+  final Widget? menuButton;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class PageBar extends StatelessWidget {
               ),
             ],
           ),
-          mainPage ? const MenuButton() : const SizedBox()
+          mainPage && menuButton != null ? menuButton! : const SizedBox()
         ],
       ),
     );

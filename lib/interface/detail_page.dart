@@ -6,20 +6,18 @@ import 'package:kuaca_bali/database/firestore/db_service.dart';
 import 'package:kuaca_bali/helper/format_currency_helper.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/interface/chat_room_page.dart';
+import 'package:kuaca_bali/interface/order_page.dart';
 import 'package:kuaca_bali/model/detail_data_model.dart';
 import 'package:kuaca_bali/provider/bookmark_provider.dart';
 import 'package:kuaca_bali/provider/detail_dress_data_provider.dart';
-import 'package:kuaca_bali/provider/cart_provider.dart.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
 class DetailPage extends StatelessWidget {
-  DetailPage({Key? key, required this.dressId, required this.imageUrl})
+  const DetailPage({Key? key, required this.dressId, required this.imageUrl})
       : super(key: key);
   final String dressId;
   final String imageUrl;
-
-  final TextEditingController dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +33,11 @@ class DetailPage extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Hero(
-                  tag: dressId,
-                  child: Image.network(
-                    imageUrl,
-                    width: MediaQuery.of(context).size.width,
-                    height: 250,
-                    fit: BoxFit.cover,
-                  ),
+                Image.network(
+                  imageUrl,
+                  width: MediaQuery.of(context).size.width,
+                  height: 250,
+                  fit: BoxFit.cover,
                 ),
                 buttonAppBar(context),
               ],
@@ -86,7 +81,6 @@ class DetailPage extends StatelessWidget {
   }
 
   Future<dynamic> showOrderPage(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
     return showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -96,186 +90,11 @@ class DetailPage extends StatelessWidget {
       ),
       context: context,
       builder: (context) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.clear, size: 35.0),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    'Atur Pesanan',
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Durasi Pemesanan',
-                          style: Theme.of(context).textTheme.headline3,
-                        ),
-                        Form(
-                          key: _formKey,
-                          child: TextFormField(
-                            controller: dateController,
-                            readOnly: true,
-                            onTap: () => _selectDate(context),
-                            decoration: const InputDecoration(
-                              icon: Icon(
-                                Icons.calendar_today,
-                                color: primary300,
-                              ),
-                              hintText: 'Pilih Tanggal',
-                            ),
-                            validator: (value) =>
-                                dateController.text == 'null' ||
-                                        value == null ||
-                                        value.isEmpty
-                                    ? 'Silahkan Pilih Tanggal Pemesanan'
-                                    : null,
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Ukuran',
-                          style: Theme.of(context).textTheme.headline3,
-                        ),
-                        const SizedBox(height: 10),
-                        Consumer<CartProvider>(
-                            builder: (context, snapshot, child) {
-                          return Wrap(
-                            alignment: WrapAlignment.start,
-                            spacing: 15,
-                            children: List<Widget>.generate(
-                              4,
-                              (int index) {
-                                return ChoiceChip(
-                                  padding: const EdgeInsets.all(10.0),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  selectedColor: secondary700,
-                                  backgroundColor: secondary300,
-                                  labelStyle:
-                                      Theme.of(context).textTheme.button,
-                                  label: Text(size[index]),
-                                  avatar: Text(
-                                    avatar[index],
-                                    style: Theme.of(context).textTheme.button,
-                                  ),
-                                  selected: snapshot.size == index,
-                                  onSelected: (bool selected) {
-                                    snapshot.addSize = index;
-                                  },
-                                );
-                              },
-                            ).toList(),
-                          );
-                        }),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Consumer<CartProvider>(
-                          builder: (context, snapshot, child) {
-                        return ElevatedButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              await snapshot.addOrder(
-                                dateController.text,
-                                dressId,
-                                AuthService().getUserId()!,
-                              );
-
-                              if (snapshot.state == ResultState.isSuccess) {
-                                Navigator.pop(context);
-                              }
-                            }
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(Icons.add),
-                              Icon(Icons.shopping_cart),
-                            ],
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(10),
-                            primary: secondary700,
-                          ),
-                        );
-                      }),
-                    ),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      flex: 3,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: const [
-                            Text('Lanjutkan Pesanan'),
-                            Icon(
-                              Icons.arrow_back,
-                              textDirection: TextDirection.rtl,
-                            ),
-                          ],
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(10),
-                          primary: secondary700,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ],
+        return OrderPage(
+          dressId: dressId,
         );
       },
     );
-  }
-
-  _selectDate(BuildContext context) async {
-    final DateTimeRange? selectDate = await showDateRangePicker(
-      context: context,
-      firstDate: DateTime(1950),
-      lastDate: DateTime(2025),
-    );
-
-    dateController.text = selectDate.toString();
   }
 
   Widget reviewBody(List<ListItemReview> listReview) {
@@ -290,7 +109,7 @@ class DetailPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     child: ListTile(
                       title: Text(listReview[index].userName),
-                      subtitle: Text(listReview[index].review),
+                      subtitle: Text(listReview[index].msg),
                       trailing: SizedBox(
                         width: 60,
                         height: 50,
@@ -377,28 +196,38 @@ class DetailPage extends StatelessWidget {
                   detailData.sellerName!,
                   style: Theme.of(context).textTheme.headline5,
                 ),
-                trailing: IconButton(
-                  onPressed: () async {
-                    final roomId = await ChatService()
-                        .getRoomFromUser(detailData.sellerId);
-                    final frienData =
-                        await ChatService().getFriendData(detailData.sellerId);
-                    if (roomId != null) {
-                      pushNewScreen(
-                        context,
-                        screen: ChatRoomPage(
-                          roomId: roomId,
-                          friendData: frienData,
+                trailing: detailData.sellerId != AuthService().getUserId()
+                    ? IconButton(
+                        onPressed: () async {
+                          final roomId = await ChatService()
+                              .getRoomFromUser(detailData.sellerId);
+                          final frienData = await ChatService()
+                              .getFriendData(detailData.sellerId);
+                          if (roomId != null) {
+                            await ChatService().readMsg(
+                                AuthService().getUserId()!,
+                                roomId,
+                                detailData.sellerId);
+                            pushNewScreen(
+                              context,
+                              screen: ChatRoomPage(
+                                roomId: roomId,
+                                friendData: frienData,
+                              ),
+                              withNavBar: false,
+                            );
+                          } else {
+                            await ChatService().createRoomChat(
+                                AuthService().getUserId()!,
+                                detailData.sellerId);
+                          }
+                        },
+                        icon: const Icon(
+                          Icons.chat,
+                          color: Colors.blue,
                         ),
-                        withNavBar: false,
-                      );
-                    }
-                  },
-                  icon: const Icon(
-                    Icons.chat,
-                    color: Colors.blue,
-                  ),
-                ),
+                      )
+                    : null,
               ),
             )
           ],
@@ -511,29 +340,30 @@ class DetailPage extends StatelessWidget {
             CircleAvatar(
               backgroundColor: secondary700.withOpacity(0.8),
               child: Consumer<BookmarkProvider>(
-                  builder: (context, snapshot, child) {
-                if (snapshot.status) {
-                  return IconButton(
-                    onPressed: () {
-                      snapshot.removeBookmark(dressId);
-                    },
-                    icon: const Icon(
-                      Icons.bookmark,
-                      color: primary300,
-                    ),
-                  );
-                } else {
-                  return IconButton(
-                    onPressed: () {
-                      snapshot.addBookmark(dressId);
-                    },
-                    icon: const Icon(
-                      Icons.bookmark,
-                      color: onSecondary,
-                    ),
-                  );
-                }
-              }),
+                builder: (context, snapshot, child) {
+                  if (snapshot.status) {
+                    return IconButton(
+                      onPressed: () {
+                        snapshot.removeBookmark(dressId);
+                      },
+                      icon: const Icon(
+                        Icons.bookmark,
+                        color: primary300,
+                      ),
+                    );
+                  } else {
+                    return IconButton(
+                      onPressed: () {
+                        snapshot.addBookmark(dressId);
+                      },
+                      icon: const Icon(
+                        Icons.bookmark,
+                        color: onSecondary,
+                      ),
+                    );
+                  }
+                },
+              ),
             ),
           ],
         ),

@@ -197,13 +197,10 @@ class HomePage extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Hero(
-                      tag: snapshot.listData[index].id,
-                      child: Image.network(
-                        snapshot.listData[index].imageUrl,
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.cover,
-                      ),
+                    child: Image.network(
+                      snapshot.listData[index].imageUrl,
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.cover,
                     ),
                   ),
                   Positioned(
