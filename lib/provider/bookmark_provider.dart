@@ -66,6 +66,16 @@ class BookmarkProvider extends ChangeNotifier {
     }
   }
 
+  Future clearBookmark() async {
+    try {
+      await dbService.clearBookmark(authService.getUserId()!);
+      _fetchBookmarkList();
+    } catch (e) {
+      _state = ResultState.isError;
+      notifyListeners();
+    }
+  }
+
   Future<bool> getStatus(String dressId) async {
     final status =
         (await dbService.getBookmark(authService.getUserId()!, dressId)).exists;

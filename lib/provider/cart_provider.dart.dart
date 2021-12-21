@@ -17,37 +17,37 @@ class CartProvider extends ChangeNotifier {
     required this.dbService,
     required this.authService,
   }) {
-    _fetchCartList();
+    fetchCartList();
   }
 
   int _dressSize = 0;
   late ResultState _state;
   late UserData _user;
   late List<CartData> _cartList;
+  late String _cartId;
 
   UserData get user => _user;
   ResultState get state => _state;
   int get size => _dressSize;
   List<CartData> get cartList => _cartList;
+  String get cartId => _cartId;
 
-  _fetchCartList() async {
+  fetchCartList() async {
     _state = ResultState.isLoading;
     notifyListeners();
     try {
-      final listBookmark =
-          await dbService.getCartList(authService.getUserId()!);
-      if (listBookmark.isNotEmpty) {
-        _cartList = listBookmark;
+      final listCart = await dbService.getCartList(authService.getUserId()!);
+      if (listCart.isNotEmpty) {
+        _cartList = listCart;
         _state = ResultState.hasData;
-        notifyListeners();
       } else {
+        _cartList = [];
         _state = ResultState.noData;
-        notifyListeners();
       }
     } catch (e) {
       _state = ResultState.isError;
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   set addSize(int size) {
@@ -55,16 +55,37 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future addOrder(String date, String dressId, String uId) async {
+  Future<String?> addCart(String date, String dressId, String uId) async {
     _state = ResultState.isLoading;
     notifyListeners();
     try {
-      await dbService.addCart(uId, dressId, date, _dressSize);
+      final result = await dbService.addCart(uId, dressId, date, _dressSize);
+      _state = ResultState.isSuccess;
+      notifyListeners();
+      return result.id;
+    } catch (e) {
+      _state = ResultState.isError;
+      notifyListeners();
+      return null;
+    }
+  }
+
+  Future<void> removeCart(String cartId) async {
+    _state = ResultState.isLoading;
+    notifyListeners();
+    try {
+      await dbService.removeCart(authService.getUserId()!, cartId);
       _state = ResultState.isSuccess;
       notifyListeners();
     } catch (e) {
       _state = ResultState.isError;
       notifyListeners();
     }
+  }
+
+  Future clearCartList(String uId) async {
+    await dbService.clearCart(uId);
+
+    fetchCartList();
   }
 }
