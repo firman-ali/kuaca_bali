@@ -61,12 +61,12 @@ class ChatService {
         .set({"friendId": friendId, "unRead": 0, "updatedAt": Timestamp.now()});
   }
 
-  Future<void> readMsg(String uId, String roomId) async {
+  Future<void> readMsg(String uId, String roomId, friendId) async {
     await _collectionUser
         .doc(uId)
         .collection('chats')
         .doc(roomId)
-        .set({"unRead": 0});
+        .set({"friendId": friendId, "unRead": 0, "updatedAt": Timestamp.now()});
   }
 
   Future<String?> getRoomFromUser(String uId) async {
@@ -76,5 +76,15 @@ class ChatService {
       return snapshot.docs.first.id;
     }
     return null;
+  }
+
+  Future<void> clearChatRoom() async {
+    final snapshot = await _collectionUser
+        .doc(AuthService().getUserId())
+        .collection('chats')
+        .get();
+    for (var element in snapshot.docs) {
+      element.reference.delete();
+    }
   }
 }
