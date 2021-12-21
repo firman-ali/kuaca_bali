@@ -40,18 +40,14 @@ class DressDataElement {
 }
 
 class ListItemReview {
-  late String id;
   late String userName;
-  late String userId;
-  late String review;
+  late String msg;
   late String orderId;
   late double starPoint;
 
   ListItemReview.fromObject(QueryDocumentSnapshot<Map<String, dynamic>> data) {
-    id = data.id;
     userName = data['userName'];
-    userId = data['userId'];
-    review = data['review'];
+    msg = data['msg'];
     orderId = data['orderId'];
     starPoint = data['starPoint'].toDouble();
   }
