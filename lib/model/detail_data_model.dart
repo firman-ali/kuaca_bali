@@ -14,6 +14,7 @@ class DressDataElement {
   late String description;
   late double rating;
   late int price;
+  late List<dynamic> listSize;
   late List<ListItemReview> listReview;
 
   late Timestamp createdAt;
@@ -36,6 +37,7 @@ class DressDataElement {
     storeAddress = seller.storeAddress;
     sellerRegisterAt = seller.sellerRegisterAt;
     listReview = reviews.docs.map((e) => ListItemReview.fromObject(e)).toList();
+    listSize = data['listSize'];
   }
 }
 

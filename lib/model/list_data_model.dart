@@ -8,7 +8,6 @@ class ListDress {
   late String? storeName;
   late String? storeAddress;
   late double rating;
-  late String size;
   late int price;
 
   ListDress.fromObject(dynamic data, UserData seller) {
@@ -17,7 +16,6 @@ class ListDress {
     imageUrl = data['imageUrl'];
     rating = data['rating'].toDouble();
     price = data['price'].toInt();
-    size = data['size'];
     sellerName = seller.name;
     storeName = seller.storeName;
     storeAddress = seller.storeAddress;

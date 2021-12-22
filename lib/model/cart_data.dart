@@ -8,7 +8,7 @@ class CartData {
   late String imageUrl;
   late Timestamp addedAt;
   late DateTimeRange orderPeriod;
-  late int size;
+  late String size;
   late String storeName;
   late String storeAddress;
   late int price;

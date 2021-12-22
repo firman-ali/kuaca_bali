@@ -5,7 +5,7 @@ class AddDressData {
   late String description;
   late String imageUrl;
   late int price;
-  late String size;
+  late List<String?> size;
   late String sellerId;
   late Timestamp createdAt;
   late Timestamp updatedAt;

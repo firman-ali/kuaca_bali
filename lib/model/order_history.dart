@@ -8,7 +8,7 @@ class OrderHistory {
   late String dresssImageUrl;
   late String dressName;
   late int price;
-  late int size;
+  late String size;
   late String orderPeriod;
   late String paymentMethod;
   late Timestamp orderedAt;
@@ -39,7 +39,7 @@ class OrderHistory {
     dressName = dreesData.name;
     dresssImageUrl = dreesData.imageUrl;
     orderPeriod = dataItems['orderPeriod'];
-    size = dataItems['size'].toInt();
+    size = dataItems['size'];
     price = dreesData.price;
     storeName = dreesData.storeName;
     orderedAt = dataOrder['orderedAt'];
