@@ -17,18 +17,19 @@ Some of the design features that will be presented in this application are:
 - [x] Authentication
 - [x] Product List
 - [x] Product Details
-- [ ] Booking
-- [ ] Chat
-- [ ] Filter
-- [ ] Booking History
-- [ ] Product Review
-- [ ] Notification
-- [ ] Admin Features
+- [x] Booking
+- [x] Chat
+- [x] Filter
+- [x] Booking History
+- [x] Product Review
+- [x] Admin Features
+- [x] Review Product
 
 Additional features that want to be presented in the application in the future
 
 - [ ] Nearby Store Recommended Features
-
+- [ ] Notification
+- [ ] Aplication Theme
 <br>
 
 ## Project Scope
