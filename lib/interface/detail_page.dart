@@ -328,7 +328,7 @@ class DetailPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    flex: 7,
+                    flex: 6,
                     child: FittedBox(
                       alignment: Alignment.centerLeft,
                       child: Text(
