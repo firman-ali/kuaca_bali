@@ -137,7 +137,7 @@ class DatabaseService {
     String dressName,
     int price,
     String description,
-    String size,
+    List<String?> size,
     File imageFile,
   ) async {
     final dateNow = Timestamp.fromDate(DateTime.now());
@@ -152,6 +152,7 @@ class DatabaseService {
       sellerId: sellerId!,
       createdAt: dateNow,
       updatedAt: dateNow,
+      rating: 0,
     );
     await _collectionDressData.add(data.toObject());
     return "success";
@@ -252,7 +253,7 @@ class DatabaseService {
     String uId,
     String dressId,
     String date,
-    int size,
+    String size,
   ) async {
     await _collectionUserData.doc(uId).collection("carts").doc(dressId).set(
       {"size": size, "orderPeriod": date, "addedAt": Timestamp.now()},
