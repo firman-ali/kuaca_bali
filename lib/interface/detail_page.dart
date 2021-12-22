@@ -55,7 +55,26 @@ class DetailPage extends StatelessWidget {
                       sellerCard(context, detailData),
                       detailBody(context, detailData.description),
                       reviewTitle(context),
-                      reviewBody(detailData.listReview)
+                      detailData.listReview.isNotEmpty
+                          ? reviewBodyList(detailData.listReview)
+                          : SliverToBoxAdapter(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0, vertical: 5.0),
+                                child: Material(
+                                  elevation: 5,
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: ListTile(
+                                    style: ListTileStyle.drawer,
+                                    title: Text(
+                                      'Belum Ada Review',
+                                      style:
+                                          Theme.of(context).textTheme.subtitle2,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
                     ],
                   ),
                 );
@@ -63,24 +82,65 @@ class DetailPage extends StatelessWidget {
             }),
           ],
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-          child: ElevatedButton(
-            onPressed: () {
-              showOrderPage(context);
-            },
-            child: const Text('Pesan Sekarang'),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.all(10),
-              primary: secondary700,
-            ),
-          ),
-        ),
+        bottomNavigationBar: bottomBar(context),
       ),
     );
   }
 
-  Future<dynamic> showOrderPage(BuildContext context) {
+  Widget bottomBar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: Consumer<DetailDataProvider>(
+        builder: (context, snapshot, child) {
+          if (snapshot.state == ResultState.hasData) {
+            return Row(
+              children: [
+                Expanded(
+                    child: SizedBox(
+                  height: 50,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Harga Mulai",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 5.0),
+                      FittedBox(
+                        child: Text(
+                          CurrencyHelper.format(snapshot.data.price) + "/Hari",
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showOrderPage(context, snapshot.data);
+                    },
+                    child: const Text('Pesan Sekarang'),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return const SizedBox();
+          }
+        },
+      ),
+    );
+  }
+
+  Future<dynamic> showOrderPage(
+      BuildContext context, DressDataElement dressData) {
     return showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -91,47 +151,60 @@ class DetailPage extends StatelessWidget {
       context: context,
       builder: (context) {
         return OrderPage(
-          dressId: dressId,
+          dress: dressData,
         );
       },
     );
   }
 
-  Widget reviewBody(List<ListItemReview> listReview) {
+  Widget reviewBodyList(List<ListItemReview> listReview) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
-            (context, index) => Container(
-                  margin: const EdgeInsets.only(bottom: 10.0),
-                  child: Material(
-                    elevation: 5,
-                    borderRadius: BorderRadius.circular(10),
-                    child: ListTile(
-                      title: Text(listReview[index].userName),
-                      subtitle: Text(listReview[index].msg),
-                      trailing: SizedBox(
-                        width: 60,
-                        height: 50,
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.star,
-                              color: primary300,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              listReview[index].starPoint.toString(),
-                              style: Theme.of(context).textTheme.headline5,
-                            ),
-                          ],
-                        ),
+          (context, index) => Container(
+            margin: const EdgeInsets.only(bottom: 10.0),
+            child: Material(
+              elevation: 5,
+              borderRadius: BorderRadius.circular(10),
+              child: ListTile(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                title: Text(
+                  listReview[index].userName,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle1
+                      ?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  listReview[index].msg,
+                  style: Theme.of(context).textTheme.subtitle2,
+                  maxLines: 10,
+                ),
+                trailing: SizedBox(
+                  width: 60,
+                  height: 50,
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.star,
+                        color: orangeButton,
+                        size: 25,
                       ),
-                    ),
+                      const SizedBox(width: 5),
+                      Text(
+                        listReview[index].starPoint.toString(),
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                    ],
                   ),
                 ),
-            childCount: listReview.length),
+              ),
+            ),
+          ),
+          childCount: listReview.length,
+        ),
       ),
     );
   }
@@ -140,7 +213,7 @@ class DetailPage extends StatelessWidget {
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Text("Review", style: Theme.of(context).textTheme.headline3),
+        child: Text("Review", style: Theme.of(context).textTheme.headline6),
       ),
     );
   }
@@ -155,11 +228,12 @@ class DetailPage extends StatelessWidget {
           children: [
             Text(
               'Detail',
-              style: Theme.of(context).textTheme.headline3,
+              style: Theme.of(context).textTheme.headline6,
             ),
+            const SizedBox(height: 10.0),
             Text(
               description,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.subtitle2,
             )
           ],
         ),
@@ -170,14 +244,14 @@ class DetailPage extends StatelessWidget {
   Widget sellerCard(BuildContext context, DressDataElement detailData) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Kontak Pemilik',
-              style: Theme.of(context).textTheme.headline3,
+              style: Theme.of(context).textTheme.headline6,
             ),
             Material(
               elevation: 5,
@@ -194,7 +268,10 @@ class DetailPage extends StatelessWidget {
                 ),
                 title: Text(
                   detailData.sellerName!,
-                  style: Theme.of(context).textTheme.headline5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle1
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 trailing: detailData.sellerId != AuthService().getUserId()
                     ? IconButton(
@@ -224,7 +301,7 @@ class DetailPage extends StatelessWidget {
                         },
                         icon: const Icon(
                           Icons.chat,
-                          color: Colors.blue,
+                          color: secondary,
                         ),
                       )
                     : null,
@@ -241,76 +318,70 @@ class DetailPage extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         margin: const EdgeInsets.symmetric(vertical: 10.0),
-        height: 130,
+        height: 100,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  detailData.name,
-                  style: Theme.of(context).textTheme.headline2,
-                ),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.star,
-                      color: primary300,
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 7,
+                    child: FittedBox(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        detailData.name,
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
                     ),
-                    Text(
-                      detailData.rating.toString(),
-                      style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.star,
+                          color: orangeButton,
+                        ),
+                        const SizedBox(width: 5.0),
+                        Text(
+                          detailData.rating.toString(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
-                  ],
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.store,
-                      color: primary300,
-                    ),
-                    Text(
-                      detailData.storeName!,
-                      style: Theme.of(context).textTheme.headline5,
-                    )
-                  ],
-                ),
-              ],
+            const SizedBox(height: 5.0),
+            Expanded(
+              child: Row(
+                children: [
+                  const Icon(Icons.store),
+                  Text(
+                    detailData.storeName!,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  )
+                ],
+              ),
             ),
-            Row(
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.location_on,
-                      color: primary300,
-                    ),
-                    Text(
-                      detailData.storeAddress!,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ],
-                ),
-              ],
+            const SizedBox(height: 5.0),
+            Expanded(
+              child: Row(
+                children: [
+                  const Icon(Icons.location_on),
+                  Text(
+                    detailData.storeAddress!,
+                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                ],
+              ),
             ),
-            Row(
-              children: [
-                Text(
-                  CurrencyHelper.format(detailData.price),
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-                Text(
-                  "/Hari",
-                  style: Theme.of(context).textTheme.headline3,
-                )
-              ],
-            )
           ],
         ),
       ),
@@ -325,7 +396,7 @@ class DetailPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CircleAvatar(
-              backgroundColor: secondary700.withOpacity(0.8),
+              backgroundColor: surface,
               child: IconButton(
                 padding: const EdgeInsets.only(left: 10),
                 onPressed: () {
@@ -333,12 +404,12 @@ class DetailPage extends StatelessWidget {
                 },
                 icon: const Icon(
                   Icons.arrow_back_ios,
-                  color: onSecondary,
+                  color: onSurface,
                 ),
               ),
             ),
             CircleAvatar(
-              backgroundColor: secondary700.withOpacity(0.8),
+              backgroundColor: surface,
               child: Consumer<BookmarkProvider>(
                 builder: (context, snapshot, child) {
                   if (snapshot.status) {
@@ -348,7 +419,7 @@ class DetailPage extends StatelessWidget {
                       },
                       icon: const Icon(
                         Icons.bookmark,
-                        color: primary300,
+                        color: selectedButton,
                       ),
                     );
                   } else {
@@ -358,7 +429,7 @@ class DetailPage extends StatelessWidget {
                       },
                       icon: const Icon(
                         Icons.bookmark,
-                        color: onSecondary,
+                        color: unSelectedButton,
                       ),
                     );
                   }

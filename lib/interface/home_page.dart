@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height / 2.5,
+            height: MediaQuery.of(context).size.height / 5.5,
             color: primary600.withOpacity(0.15),
           ),
           Padding(
@@ -35,40 +35,8 @@ class HomePage extends StatelessWidget {
               children: [
                 const SizedBox(height: 10),
                 const HomeBar(),
-                const SizedBox(height: 20),
-                Consumer<HomeProvider>(
-                  builder: (context, snapshot, child) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: MultiSelectChipDisplay<Map<String, String>>(
-                            height: 50,
-                            scroll: true,
-                            items: snapshot.filterSelected
-                                .map((e) => MultiSelectItem(e, e.values.first))
-                                .toList(),
-                          ),
-                        ),
-                        Container(
-                          height: 35,
-                          decoration: BoxDecoration(
-                              color: surface,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: IconButton(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                              _showMultiSelect(context, snapshot);
-                            },
-                            icon: const Icon(CupertinoIcons.sort_down),
-                          ),
-                        )
-                      ],
-                    );
-                  },
-                ),
+                const SizedBox(height: 15),
+                filterBody(),
                 const SizedBox(height: 10),
                 Expanded(
                   child: Consumer<HomeProvider>(
@@ -84,7 +52,7 @@ class HomePage extends StatelessWidget {
                               child: Column(
                                 children: [
                                   titleBarWidget(context),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 10),
                                 ],
                               ),
                             ),
@@ -120,11 +88,64 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget filterBody() {
+    return Consumer<HomeProvider>(
+      builder: (context, snapshot, child) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                decoration: BoxDecoration(
+                  color: surface,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: filterDisplay(context, snapshot),
+              ),
+            ),
+            const SizedBox(width: 10.0),
+            Container(
+              decoration: BoxDecoration(
+                  color: surface, borderRadius: BorderRadius.circular(20)),
+              child: IconButton(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  _showMultiSelect(context, snapshot);
+                },
+                icon: const Icon(CupertinoIcons.sort_down),
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  Widget filterDisplay(BuildContext context, HomeProvider snapshot) {
+    return MultiSelectChipDisplay<Map<String, String>>(
+      height: 50,
+      scroll: true,
+      textStyle:
+          Theme.of(context).textTheme.caption?.copyWith(color: secondary),
+      items: snapshot.filterSelected
+          .map((e) => MultiSelectItem(e, e.values.first))
+          .toList(),
+    );
+  }
+
   void _showMultiSelect(BuildContext context, HomeProvider provider) async {
     await showDialog(
       context: context,
-      builder: (ctx) {
+      builder: (contex) {
         return MultiSelectDialog<Map<String, String>>(
+          title: Text(
+            'Pilih Kategori Filter',
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
+          searchHint: 'Cari Kategori Filter',
           height: 200,
           items: provider.filterItem
               .map((e) =>
@@ -147,21 +168,9 @@ class HomePage extends StatelessWidget {
           flex: 2,
           child: Text(
             'Cari Busana Adat Impianmu',
-            style: Theme.of(context).textTheme.headline3,
+            style: Theme.of(context).textTheme.headline6,
           ),
         ),
-        IconButton(
-          padding: EdgeInsets.zero,
-          alignment: Alignment.centerRight,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          onPressed: () {},
-          iconSize: 30,
-          icon: const Icon(
-            Icons.arrow_back,
-            textDirection: TextDirection.rtl,
-          ),
-        )
       ],
     );
   }
@@ -185,7 +194,7 @@ class HomePage extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
         decoration: BoxDecoration(
-          color: surface,
+          color: primary100.withOpacity(0.25),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -200,6 +209,7 @@ class HomePage extends StatelessWidget {
                     child: Image.network(
                       snapshot.listData[index].imageUrl,
                       width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -224,7 +234,10 @@ class HomePage extends StatelessWidget {
                         child: Text(
                           snapshot.listData[index].name,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.headline5,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ),
                       Flexible(
@@ -233,14 +246,11 @@ class HomePage extends StatelessWidget {
                           children: [
                             const Icon(
                               Icons.star,
-                              color: primary300,
-                              size: 15,
+                              color: orangeButton,
+                              size: 20,
                             ),
-                            const SizedBox(width: 5),
-                            Text(
-                              snapshot.listData[index].rating.toString(),
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ),
+                            Text(snapshot.listData[index].rating.toString(),
+                                style: Theme.of(context).textTheme.subtitle2),
                           ],
                         ),
                       ),
@@ -252,12 +262,12 @@ class HomePage extends StatelessWidget {
                       Flexible(
                         child: Row(
                           children: [
-                            const Icon(Icons.store, color: primary300),
+                            const Icon(Icons.store),
                             Expanded(
                               child: Text(
                                 snapshot.listData[index].storeName!,
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.bodyText2,
+                                style: Theme.of(context).textTheme.subtitle2,
                               ),
                             )
                           ],
@@ -266,7 +276,10 @@ class HomePage extends StatelessWidget {
                       Flexible(
                         child: Text(
                           CurrencyHelper.format(snapshot.listData[index].price),
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle2
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       )
                     ],
@@ -309,7 +322,7 @@ class _BookmarkButtonState extends State<BookmarkButton> {
           builder: (context, snapshot2) {
             if (snapshot2.data != null && snapshot2.data!.exists) {
               return CircleAvatar(
-                backgroundColor: secondary700.withOpacity(0.8),
+                backgroundColor: surface,
                 radius: 18,
                 child: IconButton(
                   onPressed: () async {
@@ -319,13 +332,13 @@ class _BookmarkButtonState extends State<BookmarkButton> {
                   icon: const Icon(
                     Icons.bookmark,
                     size: 20,
-                    color: primary300,
+                    color: selectedButton,
                   ),
                 ),
               );
             } else {
               return CircleAvatar(
-                backgroundColor: secondary700.withOpacity(0.8),
+                backgroundColor: surface,
                 radius: 18,
                 child: IconButton(
                   onPressed: () async {
@@ -335,7 +348,7 @@ class _BookmarkButtonState extends State<BookmarkButton> {
                   icon: const Icon(
                     Icons.bookmark,
                     size: 20,
-                    color: onSecondary,
+                    color: unSelectedButton,
                   ),
                 ),
               );

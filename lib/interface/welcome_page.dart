@@ -65,15 +65,15 @@ class _WelcomePageState extends State<WelcomePage> {
                 children: [
                   FadeInDown(
                     child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.7,
+                      width: MediaQuery.of(context).size.width * 0.8,
                       child: RichText(
                         text: TextSpan(
                           text: appTitle,
-                          style: Theme.of(context).textTheme.headline1,
+                          style: Theme.of(context).textTheme.headline2,
                           children: [
                             TextSpan(
                               text: appCaption,
-                              style: Theme.of(context).textTheme.subtitle1,
+                              style: Theme.of(context).textTheme.subtitle2,
                             ),
                           ],
                         ),

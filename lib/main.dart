@@ -12,7 +12,6 @@ import 'package:kuaca_bali/provider/auth_provider.dart';
 import 'package:kuaca_bali/provider/bookmark_provider.dart';
 import 'package:kuaca_bali/provider/cart_provider.dart.dart';
 import 'package:kuaca_bali/provider/home_provider.dart';
-import 'package:kuaca_bali/provider/order_history_provider.dart';
 import 'package:kuaca_bali/widget/loading.dart';
 import 'package:provider/provider.dart';
 import 'common/style.dart';
@@ -46,10 +45,6 @@ class MyApp extends StatelessWidget {
           create: (_) => CartProvider(
               dbService: DatabaseService(), authService: AuthService()),
         ),
-        ChangeNotifierProvider<OrderHistoryProvider>(
-          create: (context) => OrderHistoryProvider(
-              dbService: DatabaseService(), authService: AuthService()),
-        )
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -58,6 +53,7 @@ class MyApp extends StatelessWidget {
           textButtonTheme: textButtonTheme,
           inputDecorationTheme: inputTheme,
           backgroundColor: background,
+          iconTheme: iconThemeData,
         ),
         home: Consumer<AuthProvider>(builder: (context, snapshot, _) {
           if (snapshot.state == ResultState.isLoading) {

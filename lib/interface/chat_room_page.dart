@@ -53,19 +53,36 @@ class ChatRoomPage extends StatelessWidget {
     final aligment = data.fromId == AuthService().getUserId()
         ? CrossAxisAlignment.end
         : CrossAxisAlignment.start;
+    final textAligment = data.fromId == AuthService().getUserId()
+        ? TextAlign.end
+        : TextAlign.start;
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
       child: Column(
         crossAxisAlignment: aligment,
         children: [
-          Text(
-            DateHelper.formatDateTime(data.cretaedAt),
-            style: Theme.of(context).textTheme.bodyText2,
-          ),
-          Text(
-            data.msg,
-            style:
-                Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 20),
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              color: surface,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: RichText(
+              textAlign: textAligment,
+              text: TextSpan(
+                text: DateHelper.formatDateTime(data.cretaedAt) + '\n',
+                style: Theme.of(context).textTheme.bodyText2,
+                children: [
+                  TextSpan(
+                    text: data.msg,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(fontSize: 17.5),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -107,7 +124,7 @@ class _ButtomChatFieldState extends State<ButtomChatField> {
             child: TextField(
               controller: chatController,
               decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                   border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     borderSide: BorderSide(),
@@ -116,17 +133,24 @@ class _ButtomChatFieldState extends State<ButtomChatField> {
                   hintStyle: Theme.of(context).textTheme.caption),
             ),
           ),
-          IconButton(
-            onPressed: () async {
-              await ChatService().addMessage(
-                chatController.text,
-                widget.roomId,
-                widget.friendData.id!,
-              );
-              chatController.clear();
-              FocusScope.of(context).unfocus();
-            },
-            icon: const Icon(Icons.send),
+          const SizedBox(width: 10.0),
+          Container(
+            decoration: BoxDecoration(
+              color: surface,
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: IconButton(
+              onPressed: () async {
+                await ChatService().addMessage(
+                  chatController.text,
+                  widget.roomId,
+                  widget.friendData.id!,
+                );
+                chatController.clear();
+                FocusScope.of(context).unfocus();
+              },
+              icon: const Icon(Icons.send),
+            ),
           )
         ],
       ),

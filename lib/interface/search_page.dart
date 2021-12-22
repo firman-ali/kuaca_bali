@@ -19,24 +19,27 @@ class SearchPage extends StatelessWidget {
       create: (context) => SearchProvider(dbService: DatabaseService()),
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
           child: Consumer<SearchProvider>(
             builder: (context, snapshot, child) {
               return Column(
                 children: [
                   const PageBar(mainPage: false, title: 'Search'),
-                  const SizedBox(height: 25.0),
-                  TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'Cari Disini',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0),
+                  const SizedBox(height: 15.0),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.search),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Cari Disini',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
                       ),
+                      onSubmitted: (value) => snapshot.searchData(value),
                     ),
-                    onSubmitted: (value) => snapshot.searchData(value),
                   ),
                   const SizedBox(height: 25.0),
                   Expanded(child: listBuilder(context, snapshot))
@@ -91,8 +94,8 @@ class SearchPage extends StatelessWidget {
         withNavBar: false,
       ),
       child: Container(
-        width: 90,
-        height: 90,
+        width: 100,
+        height: 100,
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         child: Material(
           elevation: 10,
@@ -117,36 +120,56 @@ class SearchPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            dressData.name,
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                          Row(
-                            children: [
-                              const Icon(Icons.star, color: primary300),
-                              Text(dressData.rating.toString()),
-                            ],
-                          ),
-                        ],
+                      SizedBox(
+                        height: 30,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 6,
+                              child: FittedBox(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  dressData.name,
+                                  style: Theme.of(context).textTheme.headline6,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.star, color: orangeButton),
+                                  Text(
+                                    dressData.rating.toString(),
+                                    style:
+                                        Theme.of(context).textTheme.subtitle2,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Row(
                         children: [
                           const Icon(
                             Icons.store,
-                            color: primary300,
                           ),
-                          Text(
-                            dressData.storeName!,
-                            style: Theme.of(context).textTheme.bodyText1,
+                          Expanded(
+                            child: Text(
+                              dressData.storeName!,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ),
                           )
                         ],
                       ),
                       Text(
                         CurrencyHelper.format(dressData.price),
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       )
                     ],
                   ),

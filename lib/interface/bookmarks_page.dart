@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/helper/format_currency_helper.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/model/list_data_model.dart';
@@ -20,7 +19,7 @@ class BookmarksPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
         child: Column(
           children: [
             const PageBar(
@@ -33,8 +32,9 @@ class BookmarksPage extends StatelessWidget {
                   builder: (context, snapshot, child) {
                 if (snapshot.state == ResultState.hasData) {
                   return ListView.builder(
+                    padding: EdgeInsets.zero,
                     itemBuilder: (context, index) {
-                      return keranjangitem(context, snapshot.listData[index]);
+                      return cartItem(context, snapshot.listData[index]);
                     },
                     itemCount: snapshot.listData.length,
                   );
@@ -53,7 +53,7 @@ class BookmarksPage extends StatelessWidget {
     );
   }
 
-  Widget keranjangitem(BuildContext context, ListDress data) {
+  Widget cartItem(BuildContext context, ListDress data) {
     return InkWell(
       onTap: () => pushNewScreen(
         context,
@@ -65,58 +65,59 @@ class BookmarksPage extends StatelessWidget {
         pageTransitionAnimation: PageTransitionAnimation.fade,
       ),
       child: Container(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.only(top: 5.0),
         height: 140,
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.network(
-                data.imageUrl,
-                width: 150.0,
-                fit: BoxFit.cover,
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  data.imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  data.name,
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.store,
-                      color: primary300,
-                      size: 20,
-                    ),
-                    Text(
-                      data.storeName!,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.location_on,
-                      color: primary300,
-                      size: 20,
-                    ),
-                    Text(
-                      data.storeAddress!,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ],
-                ),
-                Text(
-                  CurrencyHelper.format(data.price) + "/Hari",
-                  style: Theme.of(context).textTheme.headline6,
-                )
-              ],
+            Expanded(
+              flex: 2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    data.name,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.store, size: 25),
+                      const SizedBox(width: 2.0),
+                      Text(
+                        data.storeName!,
+                        style: Theme.of(context).textTheme.subtitle2,
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.location_on, size: 20),
+                      const SizedBox(width: 5.0),
+                      Text(
+                        data.storeAddress!,
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                    ],
+                  ),
+                  Text(
+                    CurrencyHelper.format(data.price) + "/Hari",
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
             ),
           ],
         ),

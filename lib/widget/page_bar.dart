@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kuaca_bali/common/colors.dart';
 
 class PageBar extends StatelessWidget {
   const PageBar(
@@ -15,24 +16,28 @@ class PageBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              mainPage
-                  ? const SizedBox()
-                  : IconButton(
-                      padding: EdgeInsets.zero,
-                      alignment: Alignment.centerLeft,
-                      iconSize: 35,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.arrow_back_ios_new),
-                    ),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.headline1,
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              children: [
+                mainPage
+                    ? const SizedBox()
+                    : IconButton(
+                        padding: EdgeInsets.zero,
+                        alignment: Alignment.centerLeft,
+                        iconSize: 35,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.arrow_back_ios_new,
+                            color: onBackground),
+                      ),
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ],
+            ),
           ),
           mainPage && menuButton != null ? menuButton! : const SizedBox()
         ],

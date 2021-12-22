@@ -48,7 +48,7 @@ class PaymentPage extends StatelessWidget {
                             children: [
                               Text(
                                 'Rincian Pesanan',
-                                style: Theme.of(context).textTheme.headline3,
+                                style: Theme.of(context).textTheme.headline6,
                               ),
                               const SizedBox(height: 10.0),
                               userInformation(),
@@ -69,7 +69,7 @@ class PaymentPage extends StatelessWidget {
                             children: [
                               Text(
                                 'Pembayaran',
-                                style: Theme.of(context).textTheme.headline3,
+                                style: Theme.of(context).textTheme.headline6,
                               ),
                               const SizedBox(height: 10.0),
                               paymentMethodSelector(context),
@@ -90,7 +90,7 @@ class PaymentPage extends StatelessWidget {
                               children: [
                                 Text(
                                   'Detail Pemesanan',
-                                  style: Theme.of(context).textTheme.headline3,
+                                  style: Theme.of(context).textTheme.headline6,
                                 ),
                                 const SizedBox(height: 10),
                                 Expanded(
@@ -139,18 +139,20 @@ class PaymentPage extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                       const SizedBox(height: 5),
-                      Text(
-                        CurrencyHelper.format(snapshot.totalPayment),
-                        style: Theme.of(context).textTheme.headline5,
+                      FittedBox(
+                        child: Text(
+                          CurrencyHelper.format(snapshot.totalPayment),
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
                       )
                     ],
                   ),
                 ),
                 Expanded(
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: secondary700,
-                        padding: const EdgeInsets.all(15)),
                     onPressed: () async {
                       await snapshot.addOrder();
                       if (snapshot.state == ResultState.isSuccess) {
@@ -176,7 +178,7 @@ class PaymentPage extends StatelessWidget {
           children: [
             Text(
               'Metode Pembayaran :',
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
             Row(
               children: [
@@ -184,7 +186,7 @@ class PaymentPage extends StatelessWidget {
                   child: ListTile(
                     title: Text(
                       'Transfer',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.subtitle2,
                     ),
                     leading: Radio<String>(
                       value: 'Transfer',
@@ -201,7 +203,7 @@ class PaymentPage extends StatelessWidget {
                   child: ListTile(
                     title: Text(
                       'COD',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.subtitle2,
                     ),
                     leading: Radio<String>(
                       value: 'COD',
@@ -235,6 +237,8 @@ class PaymentPage extends StatelessWidget {
                   snapshot.user.imageUrl ??
                       'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80',
                   width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
                 ),
               ),
               const SizedBox(width: 10),
@@ -244,14 +248,14 @@ class PaymentPage extends StatelessWidget {
                 children: [
                   Text(
                     snapshot.user.name,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                   Row(
                     children: [
                       const Icon(Icons.home, color: primary300),
                       Text(
                         snapshot.user.address,
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ],
                   )
@@ -299,13 +303,16 @@ class PaymentPage extends StatelessWidget {
                           const SizedBox(width: 2),
                           Text(
                             DateHelper.formatDateRange(cartData.orderPeriod),
-                            style: Theme.of(context).textTheme.bodyText2,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ],
                       ),
                       Text(
                         cartData.name,
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       Row(
                         children: [
@@ -335,7 +342,10 @@ class PaymentPage extends StatelessWidget {
                       ),
                       Text(
                         CurrencyHelper.format(cartData.price) + '/Hari',
-                        style: Theme.of(context).textTheme.headline6,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       )
                     ],
                   ),
@@ -344,11 +354,11 @@ class PaymentPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 8.0, vertical: 5.0),
                   decoration: BoxDecoration(
-                    color: secondary300,
+                    color: primary600,
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Text(
-                    avatar[cartData.size],
+                    cartData.size.characters.first,
                     style: const TextStyle(color: onSecondary),
                   ),
                 )

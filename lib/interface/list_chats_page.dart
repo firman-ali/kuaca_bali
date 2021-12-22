@@ -15,52 +15,55 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
-        child: Column(
-          children: [
-            const PageBar(
-              mainPage: true,
-              title: 'Chats',
-              menuButton: MenuButtonChat(),
-            ),
-            const SizedBox(height: 25.0),
-            TextField(
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: Colors.white,
-                labelText: 'Cari Pemilik Toko',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+          child: Column(
+            children: [
+              const PageBar(
+                mainPage: true,
+                title: 'Chats',
+                menuButton: MenuButtonChat(),
+              ),
+              const SizedBox(height: 25.0),
+              TextField(
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.search),
+                  filled: true,
+                  fillColor: Colors.white,
+                  labelText: 'Cari Pemilik Toko',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20.0),
-            Expanded(
-              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream:
-                    ChatService().getListChatStream(AuthService().getUserId()!),
-                builder: (context, snapshot1) {
-                  if (snapshot1.connectionState == ConnectionState.active) {
-                    if (snapshot1.data!.docs.isNotEmpty) {
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemCount: snapshot1.data?.docs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return chatTile(snapshot1, index);
-                        },
-                      );
-                    } else {
-                      return const CustomError(errorStatus: Status.empty);
+              const SizedBox(height: 20.0),
+              Expanded(
+                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: ChatService()
+                      .getListChatStream(AuthService().getUserId()!),
+                  builder: (context, snapshot1) {
+                    if (snapshot1.connectionState == ConnectionState.active) {
+                      if (snapshot1.data!.docs.isNotEmpty) {
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          itemCount: snapshot1.data?.docs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return chatTile(snapshot1, index);
+                          },
+                        );
+                      } else {
+                        return const CustomError(errorStatus: Status.empty);
+                      }
                     }
-                  }
-                  return const CircularProgressIndicator();
-                },
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -113,6 +116,7 @@ class ChatPage extends StatelessWidget {
                     vertical: 10.0,
                     horizontal: 10.0,
                   ),
+                  minLeadingWidth: 0,
                   leading: CircleAvatar(
                     backgroundImage: NetworkImage(
                       snapshot2.data?.data()?["imageUrl"] ??
@@ -122,16 +126,18 @@ class ChatPage extends StatelessWidget {
                   ),
                   title: Text(
                     snapshot2.data?.data()?["name"],
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   subtitle: snapshot2.data?.data()?["storeName"] != null
                       ? Row(
                           children: [
-                            const Icon(Icons.store,
-                                color: primary300, size: 20),
+                            const Icon(Icons.store, size: 20),
                             Text(
                               snapshot2.data?.data()?["storeName"],
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.subtitle2,
                             )
                           ],
                         )
@@ -146,7 +152,7 @@ class ChatPage extends StatelessWidget {
                               height: 20,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: secondary300,
+                                color: primary600,
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               child: Text(

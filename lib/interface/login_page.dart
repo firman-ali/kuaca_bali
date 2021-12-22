@@ -133,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                             const TextSpan(text: dontHaveAccount),
                             TextSpan(
                               text: registerLabel,
-                              style: const TextStyle(color: secondary700),
+                              style: const TextStyle(color: secondary),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Navigator.pushReplacementNamed(

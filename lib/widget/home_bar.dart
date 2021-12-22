@@ -44,13 +44,11 @@ class HomeBar extends StatelessWidget {
                                 ),
                         ),
                         const SizedBox(width: 10),
-                        Text(
-                          'Welcome, ' + snapshot.name!,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline4
-                              ?.copyWith(color: onSurface),
-                        ),
+                        Text('Welcome, ' + snapshot.name!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1
+                                ?.copyWith(fontWeight: FontWeight.bold)),
                       ],
                     );
                   } else {
@@ -65,13 +63,11 @@ class HomeBar extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        Text(
-                          'Welcome, User',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline3
-                              ?.copyWith(color: onPrimaryWhite),
-                        ),
+                        Text('Welcome, User',
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1
+                                ?.copyWith(fontWeight: FontWeight.bold)),
                       ],
                     );
                   }

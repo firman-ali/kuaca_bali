@@ -4,14 +4,15 @@ import 'package:kuaca_bali/database/auth/auth_service.dart';
 import 'package:kuaca_bali/helper/date_helper.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/interface/payment_page.dart';
+import 'package:kuaca_bali/model/detail_data_model.dart';
 import 'package:kuaca_bali/provider/cart_provider.dart.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
 class OrderPage extends StatefulWidget {
-  const OrderPage({Key? key, required this.dressId}) : super(key: key);
+  const OrderPage({Key? key, required this.dress}) : super(key: key);
 
-  final String dressId;
+  final DressDataElement dress;
 
   @override
   State<OrderPage> createState() => _OrderPageState();
@@ -42,12 +43,12 @@ class _OrderPageState extends State<OrderPage> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: const Icon(Icons.clear, size: 35.0),
+                icon: const Icon(Icons.clear, size: 35.0, color: onSurface),
               ),
               const SizedBox(width: 10),
               Text(
                 'Atur Pesanan',
-                style: Theme.of(context).textTheme.headline2,
+                style: Theme.of(context).textTheme.headline5,
               ),
             ],
           ),
@@ -65,7 +66,7 @@ class _OrderPageState extends State<OrderPage> {
                   children: [
                     Text(
                       'Durasi Pemesanan',
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     Form(
                       key: _formKey,
@@ -76,7 +77,7 @@ class _OrderPageState extends State<OrderPage> {
                         decoration: const InputDecoration(
                           icon: Icon(
                             Icons.calendar_today,
-                            color: primary300,
+                            color: primary600,
                           ),
                           hintText: 'Pilih Tanggal',
                         ),
@@ -94,7 +95,7 @@ class _OrderPageState extends State<OrderPage> {
                   children: [
                     Text(
                       'Ukuran',
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     const SizedBox(height: 10),
                     Consumer<CartProvider>(builder: (context, snapshot, child) {
@@ -102,24 +103,30 @@ class _OrderPageState extends State<OrderPage> {
                         alignment: WrapAlignment.start,
                         spacing: 15,
                         children: List<Widget>.generate(
-                          4,
+                          widget.dress.listSize.length,
                           (int index) {
                             return ChoiceChip(
                               padding: const EdgeInsets.all(10.0),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              selectedColor: secondary700,
-                              backgroundColor: secondary300,
+                              selectedColor: primary600,
+                              backgroundColor: primary100,
                               labelStyle: Theme.of(context).textTheme.button,
-                              label: Text(size[index]),
+                              label:
+                                  Text(widget.dress.listSize[index].toString()),
                               avatar: Text(
-                                avatar[index],
+                                widget.dress.listSize[index]
+                                    .toString()
+                                    .characters
+                                    .first,
                                 style: Theme.of(context).textTheme.button,
                               ),
-                              selected: snapshot.size == index,
+                              selected: widget.dress.listSize
+                                      .indexOf(snapshot.size) ==
+                                  index,
                               onSelected: (bool selected) {
-                                snapshot.addSize = index;
+                                snapshot.addSize = widget.dress.listSize[index];
                               },
                             );
                           },
@@ -146,7 +153,7 @@ class _OrderPageState extends State<OrderPage> {
                         if (_formKey.currentState!.validate()) {
                           await snapshot.addCart(
                             dateController.text,
-                            widget.dressId,
+                            widget.dress.id,
                             AuthService().getUserId()!,
                           );
 
@@ -163,10 +170,6 @@ class _OrderPageState extends State<OrderPage> {
                           Icon(Icons.shopping_cart),
                         ],
                       ),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(10),
-                        primary: secondary700,
-                      ),
                     );
                   }),
                 ),
@@ -180,7 +183,7 @@ class _OrderPageState extends State<OrderPage> {
                         if (_formKey.currentState!.validate()) {
                           final cartId = await snapshot.addCart(
                             dateController.text,
-                            widget.dressId,
+                            widget.dress.id,
                             AuthService().getUserId()!,
                           );
 
@@ -206,10 +209,6 @@ class _OrderPageState extends State<OrderPage> {
                           ),
                         ],
                       ),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(10),
-                        primary: secondary700,
-                      ),
                     );
                   }),
                 )
@@ -225,7 +224,15 @@ class _OrderPageState extends State<OrderPage> {
     final DateTimeRange? selectDate = await showDateRangePicker(
       context: context,
       firstDate: DateTime.now(),
+      currentDate: DateTime.now(),
       lastDate: DateTime(2025),
+      helpText: 'Pilih Tanggal Durasi Pemesanan',
+      fieldStartLabelText: 'Dari Tanggal',
+      fieldEndLabelText: 'Sampai Tanggal',
+      saveText: 'Simpan',
+      errorFormatText: 'Format Salah',
+      errorInvalidText: 'Format Wajib Angka',
+      errorInvalidRangeText: 'Durasi Salah',
     );
 
     dateController.text = selectDate.toString();

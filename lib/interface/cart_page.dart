@@ -20,7 +20,7 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
         child: Column(
           children: [
             const PageBar(
@@ -33,6 +33,7 @@ class CartPage extends StatelessWidget {
                 builder: (context, snapshot, child) {
                   if (snapshot.state == ResultState.hasData) {
                     return ListView.builder(
+                      padding: const EdgeInsets.only(top: 5.0),
                       itemBuilder: (context, index) {
                         return cartitem(
                             context, snapshot.cartList[index], snapshot);
@@ -49,37 +50,30 @@ class CartPage extends StatelessWidget {
                 },
               ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.all(10.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  final listCartId =
-                      Provider.of<CartProvider>(context, listen: false)
-                          .cartList;
-                  if (listCartId.isNotEmpty) {
-                    pushNewScreen(
-                      context,
-                      screen: PaymentPage(
-                        cartId: listCartId.map((e) => e.cartId).toList(),
-                      ),
-                      withNavBar: false,
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Tidak Ada Pesanan Di Keranjang'),
-                      ),
-                    );
-                  }
-                },
-                child: const Text('Bayar Pesanan'),
-                style: ElevatedButton.styleFrom(
-                  primary: secondary700,
-                  padding: const EdgeInsets.all(10),
-                ),
-              ),
-            )
+            Consumer<CartProvider>(builder: (context, snapshot, child) {
+              if (snapshot.state == ResultState.hasData) {
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: const EdgeInsets.all(10.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final listCartId =
+                          Provider.of<CartProvider>(context, listen: false)
+                              .cartList;
+                      pushNewScreen(
+                        context,
+                        screen: PaymentPage(
+                          cartId: listCartId.map((e) => e.cartId).toList(),
+                        ),
+                        withNavBar: false,
+                      );
+                    },
+                    child: const Text('Bayar Pesanan'),
+                  ),
+                );
+              }
+              return const SizedBox();
+            })
           ],
         ),
       ),
@@ -96,9 +90,8 @@ class CartPage extends StatelessWidget {
         withNavBar: false,
         pageTransitionAnimation: PageTransitionAnimation.fade,
       ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
-        height: 130.0,
+      child: SizedBox(
+        height: 120.0,
         child: Row(
           children: [
             Expanded(
@@ -112,18 +105,15 @@ class CartPage extends StatelessWidget {
             ),
             const SizedBox(width: 5),
             Expanded(
-              flex: 3,
+              flex: 2,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(
                     children: [
-                      const Icon(
-                        Icons.calendar_today,
-                        size: 20,
-                        color: primary300,
-                      ),
+                      const Icon(Icons.calendar_today, size: 15),
+                      const SizedBox(width: 5.0),
                       Text(
                         DateHelper.formatDateRange(cartData.orderPeriod),
                         style: Theme.of(context).textTheme.bodyText1,
@@ -132,24 +122,24 @@ class CartPage extends StatelessWidget {
                   ),
                   Text(
                     cartData.name,
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                   Row(
                     children: [
-                      const Icon(
-                        Icons.store,
-                        color: primary300,
-                        size: 20,
-                      ),
+                      const Icon(Icons.store, size: 20),
+                      const SizedBox(width: 5.0),
                       Text(
                         cartData.storeName,
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.subtitle2,
                       )
                     ],
                   ),
                   Text(
                     CurrencyHelper.format(cartData.price),
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   )
                 ],
               ),
@@ -161,22 +151,27 @@ class CartPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 8.0, vertical: 5.0),
                   decoration: BoxDecoration(
-                    color: secondary300,
+                    color: primary600,
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Text(
-                    avatar[cartData.size],
+                    cartData.size.characters.first,
                     style: const TextStyle(color: onSecondary),
                   ),
                 ),
-                IconButton(
-                  onPressed: () async {
-                    await snapshot.removeCart(cartData.cartId);
-                    snapshot.fetchCartList();
-                  },
-                  icon: const Icon(
-                    CupertinoIcons.trash,
-                    color: primary300,
+                SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () async {
+                      await snapshot.removeCart(cartData.cartId);
+                      snapshot.fetchCartList();
+                    },
+                    icon: const Icon(
+                      CupertinoIcons.trash,
+                      color: primary300,
+                    ),
                   ),
                 )
               ],

@@ -65,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         children: [
                           Text(
                             'Buat Akun Baru',
-                            style: Theme.of(context).textTheme.headline1,
+                            style: Theme.of(context).textTheme.headline3,
                           ),
                           Text(
                             'Buat akun kuacamu untuk melihat kumpulan busana adat yang keren',
@@ -165,7 +165,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           const TextSpan(text: haveAccount),
                           TextSpan(
                             text: loginLabel,
-                            style: const TextStyle(color: secondary700),
+                            style: const TextStyle(color: secondary),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.pushReplacementNamed(

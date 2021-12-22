@@ -6,8 +6,9 @@ import 'colors.dart';
 ElevatedButtonThemeData elevatedButtonTheme = ElevatedButtonThemeData(
   style: ElevatedButton.styleFrom(
       onPrimary: onSecondary,
-      primary: secondary300,
+      primary: secondary,
       textStyle: textTheme.button,
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       )),
@@ -21,59 +22,59 @@ TextButtonThemeData textButtonTheme = TextButtonThemeData(
 
 TextTheme textTheme = TextTheme(
   headline1: GoogleFonts.firaSansCondensed(
-    fontSize: 38,
+    fontSize: 82.5,
     fontWeight: FontWeight.w500,
     color: onPrimaryBlack,
   ),
   headline2: GoogleFonts.firaSansCondensed(
-    fontSize: 30,
+    fontSize: 66,
     fontWeight: FontWeight.w500,
     color: onPrimaryBlack,
   ),
   headline3: GoogleFonts.firaSansCondensed(
-    fontSize: 26,
+    fontSize: 52.8,
     fontWeight: FontWeight.w500,
     color: onPrimaryBlack,
   ),
   headline4: GoogleFonts.firaSansCondensed(
-    fontSize: 22,
+    fontSize: 42.2,
     fontWeight: FontWeight.w500,
     color: onPrimaryBlack,
   ),
   headline5: GoogleFonts.firaSansCondensed(
-    fontSize: 20,
+    fontSize: 33.75,
     fontWeight: FontWeight.w500,
     color: onPrimaryBlack,
   ),
   headline6: GoogleFonts.firaSansCondensed(
-    fontSize: 18,
+    fontSize: 27,
     fontWeight: FontWeight.w500,
     color: onPrimaryBlack,
   ),
   subtitle1: GoogleFonts.firaSansCondensed(
-    fontSize: 22,
+    fontSize: 21.9,
     fontWeight: FontWeight.w400,
     color: onPrimaryBlack,
   ),
   subtitle2: GoogleFonts.firaSansCondensed(
-    fontSize: 20,
+    fontSize: 17.5,
     fontWeight: FontWeight.w400,
   ),
   bodyText1: GoogleFonts.publicSans(
-    fontSize: 16,
-    fontWeight: FontWeight.normal,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
   ),
   bodyText2: GoogleFonts.publicSans(
-    fontSize: 14,
-    fontWeight: FontWeight.normal,
+    fontSize: 11.2,
+    fontWeight: FontWeight.w500,
   ),
   button: GoogleFonts.publicSans(
     color: onSecondary,
     fontSize: 18,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w500,
   ),
   caption: GoogleFonts.publicSans(
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: FontWeight.w500,
     color: onSurface,
   ),
@@ -91,3 +92,5 @@ InputDecorationTheme inputTheme = InputDecorationTheme(
   focusColor: primary300,
   errorStyle: textTheme.bodyText1,
 );
+
+IconThemeData iconThemeData = const IconThemeData(color: primary600);
