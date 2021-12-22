@@ -39,8 +39,10 @@ class PaymentProvider extends ChangeNotifier {
             await dbService.getCartData(authService.getUserId()!, id);
 
         _cartList.add(cartData);
-        _totalPayment +=
-            (cartData.price * cartData.orderPeriod.duration.inDays);
+        _totalPayment += (cartData.price *
+            (cartData.orderPeriod.duration.inDays > 0
+                ? cartData.orderPeriod.duration.inDays
+                : 1));
       }
       _state = ResultState.isSuccess;
     } catch (e) {

@@ -6,9 +6,6 @@ import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/model/cart_data.dart';
 import 'package:kuaca_bali/model/user_data_model.dart';
 
-final size = ["Small", "Medium", "Large", "Extra Large"];
-final avatar = ["S", "M", "L", "XL"];
-
 class CartProvider extends ChangeNotifier {
   DatabaseService dbService;
   AuthService authService;
@@ -20,7 +17,7 @@ class CartProvider extends ChangeNotifier {
     fetchCartList();
   }
 
-  int _dressSize = 0;
+  String _dressSize = 'Small';
   late ResultState _state;
   late UserData _user;
   late List<CartData> _cartList;
@@ -28,7 +25,7 @@ class CartProvider extends ChangeNotifier {
 
   UserData get user => _user;
   ResultState get state => _state;
-  int get size => _dressSize;
+  String get size => _dressSize;
   List<CartData> get cartList => _cartList;
   String get cartId => _cartId;
 
@@ -50,7 +47,7 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  set addSize(int size) {
+  set addSize(String size) {
     _dressSize = size;
     notifyListeners();
   }
