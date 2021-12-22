@@ -5,7 +5,7 @@ class AddDressData {
   late String description;
   late String imageUrl;
   late int price;
-  late List<String?> size;
+  late List<String?> listSize;
   late String sellerId;
   late Timestamp createdAt;
   late Timestamp updatedAt;
@@ -16,7 +16,7 @@ class AddDressData {
     required this.description,
     required this.imageUrl,
     required this.price,
-    required this.size,
+    required this.listSize,
     required this.sellerId,
     required this.createdAt,
     required this.updatedAt,
@@ -29,7 +29,7 @@ class AddDressData {
         "imageUrl": imageUrl,
         "price": price,
         "rating": rating,
-        "size": size,
+        "size": listSize,
         "sellerId": sellerId,
         "createdAt": createdAt,
         "updatedAt": updatedAt,

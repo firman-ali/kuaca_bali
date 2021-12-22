@@ -148,7 +148,7 @@ class DatabaseService {
       description: description,
       imageUrl: imageUrl,
       price: price,
-      size: size,
+      listSize: size,
       sellerId: sellerId!,
       createdAt: dateNow,
       updatedAt: dateNow,
