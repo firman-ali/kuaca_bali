@@ -45,6 +45,8 @@ dependencies:
   multi_select_flutter: ^4.0.0
   flutter_rating_bar: ^4.0.0
   image_picker: ^0.8.4+4
+  flutter_phoenix: ^1.0.0
+  shared_preferences: ^2.0.11
 
 dev_dependencies:
   flutter_test:
