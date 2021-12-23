@@ -75,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                             style: GoogleFonts.publicSans(
                               fontSize: 16,
                               fontWeight: FontWeight.normal,
+                              color: onSurface,
                             ),
                           ),
                         ),
@@ -96,7 +97,8 @@ class _LoginPageState extends State<LoginPage> {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => PageRouter()),
+                                          builder: (context) =>
+                                              const PageRouter()),
                                     );
                                   }
                                 } on FirebaseAuthException catch (e) {
@@ -133,7 +135,10 @@ class _LoginPageState extends State<LoginPage> {
                             const TextSpan(text: dontHaveAccount),
                             TextSpan(
                               text: registerLabel,
-                              style: const TextStyle(color: secondary),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle2
+                                  ?.copyWith(color: secondary),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Navigator.pushReplacementNamed(
@@ -141,7 +146,10 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                             ),
                           ],
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle2
+                              ?.copyWith(color: onSurface),
                         ),
                       ),
                     ),

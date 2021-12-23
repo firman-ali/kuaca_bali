@@ -17,35 +17,36 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SearchProvider>(
       create: (context) => SearchProvider(dbService: DatabaseService()),
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
-          child: Consumer<SearchProvider>(
-            builder: (context, snapshot, child) {
-              return Column(
-                children: [
-                  const PageBar(mainPage: false, title: 'Search'),
-                  const SizedBox(height: 15.0),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search),
-                        filled: true,
-                        fillColor: Colors.white,
-                        labelText: 'Cari Disini',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+            child: Consumer<SearchProvider>(
+              builder: (context, snapshot, child) {
+                return Column(
+                  children: [
+                    const PageBar(mainPage: false, title: 'Search'),
+                    const SizedBox(height: 15.0),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.search),
+                          labelText: 'Cari Disini',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
                         ),
+                        onSubmitted: (value) => snapshot.searchData(value),
                       ),
-                      onSubmitted: (value) => snapshot.searchData(value),
                     ),
-                  ),
-                  const SizedBox(height: 25.0),
-                  Expanded(child: listBuilder(context, snapshot))
-                ],
-              );
-            },
+                    const SizedBox(height: 15.0),
+                    Expanded(child: listBuilder(context, snapshot))
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -94,7 +95,6 @@ class SearchPage extends StatelessWidget {
         withNavBar: false,
       ),
       child: Container(
-        width: 100,
         height: 100,
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         child: Material(
@@ -110,6 +110,7 @@ class SearchPage extends StatelessWidget {
                     child: Image.network(
                       dressData.imageUrl,
                       fit: BoxFit.cover,
+                      height: 100,
                     ),
                   ),
                 ),
@@ -120,35 +121,33 @@ class SearchPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SizedBox(
-                        height: 30,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex: 6,
-                              child: FittedBox(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  dressData.name,
-                                  style: Theme.of(context).textTheme.headline6,
-                                ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 250,
+                            height: 25,
+                            child: FittedBox(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                dressData.name,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.star, color: orangeButton),
-                                  Text(
-                                    dressData.rating.toString(),
-                                    style:
-                                        Theme.of(context).textTheme.subtitle2,
-                                  ),
-                                ],
+                          ),
+                          Row(
+                            children: [
+                              const Icon(Icons.star, color: orangeButton),
+                              Text(
+                                dressData.rating.toString(),
+                                style: Theme.of(context).textTheme.subtitle2,
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                        ],
                       ),
                       Row(
                         children: [
@@ -168,7 +167,7 @@ class SearchPage extends StatelessWidget {
                         CurrencyHelper.format(dressData.price),
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle1
+                            .subtitle2
                             ?.copyWith(fontWeight: FontWeight.bold),
                       )
                     ],

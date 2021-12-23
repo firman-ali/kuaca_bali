@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
-import 'package:kuaca_bali/database/auth/auth_service.dart';
 import 'package:kuaca_bali/interface/add_item_seller.dart';
 import 'package:kuaca_bali/interface/register_seller_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
+import 'package:kuaca_bali/provider/preference_provider.dart';
 import 'package:kuaca_bali/widget/menu_button.dart';
 import 'package:kuaca_bali/widget/page_bar.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -72,9 +72,15 @@ class SettingPage extends StatelessWidget {
                           'Night Mode',
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
-                        CupertinoSwitch(
-                          value: false,
-                          onChanged: (value) {},
+                        Consumer<PreferenceProvider>(
+                          builder: (context, snapshot, child) {
+                            return CupertinoSwitch(
+                              value: snapshot.isDarkTheme,
+                              onChanged: (value) {
+                                snapshot.enableDarkTheme = value;
+                              },
+                            );
+                          },
                         ),
                       ],
                     ),

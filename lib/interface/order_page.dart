@@ -68,6 +68,7 @@ class _OrderPageState extends State<OrderPage> {
                       'Durasi Pemesanan',
                       style: Theme.of(context).textTheme.headline6,
                     ),
+                    const SizedBox(height: 15),
                     Form(
                       key: _formKey,
                       child: TextFormField(
@@ -97,7 +98,7 @@ class _OrderPageState extends State<OrderPage> {
                       'Ukuran',
                       style: Theme.of(context).textTheme.headline6,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     Consumer<CartProvider>(builder: (context, snapshot, child) {
                       return Wrap(
                         alignment: WrapAlignment.start,

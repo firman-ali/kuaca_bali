@@ -28,18 +28,6 @@ class ChatPage extends StatelessWidget {
                 menuButton: MenuButtonChat(),
               ),
               const SizedBox(height: 25.0),
-              TextField(
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
-                  filled: true,
-                  fillColor: Colors.white,
-                  labelText: 'Cari Pemilik Toko',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20.0),
               Expanded(
                 child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                   stream: ChatService()

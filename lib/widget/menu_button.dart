@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kuaca_bali/common/colors.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:kuaca_bali/database/auth/auth_service.dart';
 import 'package:kuaca_bali/database/firestore/chat_service.dart';
 import 'package:kuaca_bali/interface/history_page.dart';
@@ -89,14 +89,13 @@ class PopMenuButton extends StatelessWidget {
             break;
           case "Logout":
             Provider.of<AuthProvider>(context, listen: false).signOut();
+            Phoenix.rebirth(context);
             break;
           default:
         }
       },
-      color: surface,
       icon: const Icon(
         Icons.more_vert,
-        color: onSurface,
       ),
       iconSize: 35,
       padding: EdgeInsets.zero,

@@ -1,18 +1,59 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
+import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/interface/bookmarks_page.dart';
 import 'package:kuaca_bali/interface/cart_page.dart';
 import 'package:kuaca_bali/interface/list_chats_page.dart';
 import 'package:kuaca_bali/interface/home_page.dart';
 import 'package:kuaca_bali/interface/setting_page.dart';
+import 'package:kuaca_bali/interface/welcome_page.dart';
+import 'package:kuaca_bali/provider/auth_provider.dart';
+import 'package:kuaca_bali/widget/loading.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
-class PageRouter extends StatelessWidget {
-  PageRouter({Key? key}) : super(key: key);
+class PageNavigation extends StatelessWidget {
+  const PageNavigation({Key? key}) : super(key: key);
 
-  final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AuthProvider>(
+      builder: (context, snapshot, _) {
+        if (snapshot.state == ResultState.isLoading) {
+          return const LoadingWidget();
+        } else {
+          if (snapshot.isSignIn) {
+            return const PageRouter();
+          } else {
+            return const WelcomePage();
+          }
+        }
+      },
+    );
+  }
+}
+
+class PageRouter extends StatefulWidget {
+  const PageRouter({Key? key}) : super(key: key);
+
+  @override
+  State<PageRouter> createState() => _PageRouterState();
+}
+
+class _PageRouterState extends State<PageRouter> {
+  PersistentTabController _controller = PersistentTabController();
+  @override
+  void initState() {
+    _controller = PersistentTabController(initialIndex: 0);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

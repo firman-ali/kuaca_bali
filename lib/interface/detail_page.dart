@@ -276,8 +276,8 @@ class DetailPage extends StatelessWidget {
                 trailing: detailData.sellerId != AuthService().getUserId()
                     ? IconButton(
                         onPressed: () async {
-                          final roomId = await ChatService()
-                              .getRoomFromUser(detailData.sellerId);
+                          String? roomId = await ChatService().getRoomFromUser(
+                              detailData.sellerId, AuthService().getUserId()!);
                           final frienData = await ChatService()
                               .getFriendData(detailData.sellerId);
                           if (roomId != null) {
@@ -294,9 +294,17 @@ class DetailPage extends StatelessWidget {
                               withNavBar: false,
                             );
                           } else {
-                            await ChatService().createRoomChat(
+                            roomId = await ChatService().createRoomChat(
                                 AuthService().getUserId()!,
                                 detailData.sellerId);
+                            pushNewScreen(
+                              context,
+                              screen: ChatRoomPage(
+                                roomId: roomId,
+                                friendData: frienData,
+                              ),
+                              withNavBar: false,
+                            );
                           }
                         },
                         icon: const Icon(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kuaca_bali/common/colors.dart';
 
 class CustomFormField extends StatelessWidget {
   final TextEditingController controller;
@@ -34,7 +35,11 @@ class CustomFormField extends StatelessWidget {
         decoration: InputDecoration(
           prefixIcon: Icon(prefixIcon),
           labelText: labelText,
+          labelStyle:
+              Theme.of(context).textTheme.subtitle2?.copyWith(color: onSurface),
         ),
+        style:
+            Theme.of(context).textTheme.subtitle2?.copyWith(color: onSurface),
       ),
     );
   }

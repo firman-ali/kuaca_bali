@@ -69,11 +69,11 @@ class _WelcomePageState extends State<WelcomePage> {
                       child: RichText(
                         text: TextSpan(
                           text: appTitle,
-                          style: Theme.of(context).textTheme.headline2,
+                          style: Theme.of(context).textTheme.headline3,
                           children: [
                             TextSpan(
                               text: appCaption,
-                              style: Theme.of(context).textTheme.subtitle2,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                           ],
                         ),

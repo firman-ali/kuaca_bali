@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/helper/format_currency_helper.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/model/list_data_model.dart';
@@ -67,59 +68,71 @@ class BookmarksPage extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.only(top: 5.0),
         height: 140,
-        child: Row(
-          children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  data.imageUrl,
-                  fit: BoxFit.cover,
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          margin: const EdgeInsets.symmetric(vertical: 5.0),
+          decoration: BoxDecoration(
+            color: primary100.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(
+                    data.imageUrl,
+                    height: 140,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              flex: 2,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    data.name,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  Row(
-                    children: [
-                      const Icon(Icons.store, size: 25),
-                      const SizedBox(width: 2.0),
-                      Text(
-                        data.storeName!,
-                        style: Theme.of(context).textTheme.subtitle2,
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Icon(Icons.location_on, size: 20),
-                      const SizedBox(width: 5.0),
-                      Text(
-                        data.storeAddress!,
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                    ],
-                  ),
-                  Text(
-                    CurrencyHelper.format(data.price) + "/Hari",
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  )
-                ],
+              const SizedBox(width: 10),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      data.name,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Row(
+                      children: [
+                        const Icon(Icons.store, size: 15),
+                        const SizedBox(width: 2.0),
+                        Text(
+                          data.storeName!,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on, size: 15),
+                        const SizedBox(width: 5.0),
+                        Text(
+                          data.storeAddress!,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ],
+                    ),
+                    Text(
+                      CurrencyHelper.format(data.price) + "/Hari",
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
