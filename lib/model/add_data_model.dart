@@ -29,7 +29,7 @@ class AddDressData {
         "imageUrl": imageUrl,
         "price": price,
         "rating": rating,
-        "size": listSize,
+        "listSize": listSize,
         "sellerId": sellerId,
         "createdAt": createdAt,
         "updatedAt": updatedAt,
