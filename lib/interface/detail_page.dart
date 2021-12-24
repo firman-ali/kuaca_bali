@@ -383,9 +383,11 @@ class DetailPage extends StatelessWidget {
               child: Row(
                 children: [
                   const Icon(Icons.location_on),
-                  Text(
-                    detailData.storeAddress!,
-                    style: Theme.of(context).textTheme.subtitle2,
+                  Expanded(
+                    child: Text(
+                      detailData.storeAddress!,
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
                   ),
                 ],
               ),
