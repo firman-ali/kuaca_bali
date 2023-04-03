@@ -27,8 +27,10 @@ class HomeProvider extends ChangeNotifier {
   List<Map<String, String>> get filterSelected => _filterSelected;
   List<Map<String, String>> get filterItem => _filterItem;
 
-  _fetchAllData() async {
-    _filterSelected.add({'semua': 'Semua'});
+  Future<void> _fetchAllData() async {
+    if (_filterSelected.isEmpty) {
+      _filterSelected.add({'semua': 'Semua'});
+    }
     _state = ResultState.isLoading;
     notifyListeners();
     try {
@@ -76,5 +78,9 @@ class HomeProvider extends ChangeNotifier {
       _filterSelected.add({'semua': 'Semua'});
     }
     fetchDataSorting();
+  }
+
+  Future refreshData() async {
+    await _fetchAllData();
   }
 }

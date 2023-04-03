@@ -27,8 +27,9 @@ class AddItemProvider extends ChangeNotifier {
   String get size => _size;
   Uint8List get imageUin => _imageUin;
 
-  addItem(String dressName, int price, String description) {
-    dbService.inputData(
+  Future<String> addItem(
+      String dressName, int price, String description) async {
+    return await dbService.inputData(
       dressName,
       price,
       description,

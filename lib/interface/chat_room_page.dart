@@ -78,7 +78,7 @@ class ChatRoomPage extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .bodyText1
-                        ?.copyWith(fontSize: 17.5),
+                        ?.copyWith(fontSize: 17.5, color: onSurface),
                   ),
                 ],
               ),

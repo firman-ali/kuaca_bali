@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kuaca_bali/common/colors.dart';
 
 class CustomPasswordField extends StatefulWidget {
   final TextEditingController controller;
@@ -48,7 +49,11 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
             icon: const Icon(Icons.remove_red_eye),
           ),
           labelText: widget.labelText,
+          labelStyle:
+              Theme.of(context).textTheme.subtitle2?.copyWith(color: onSurface),
         ),
+        style:
+            Theme.of(context).textTheme.subtitle2?.copyWith(color: onSurface),
       ),
     );
   }

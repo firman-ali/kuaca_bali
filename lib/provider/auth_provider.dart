@@ -36,7 +36,7 @@ class AuthProvider extends ChangeNotifier {
   signOut() async {
     await service.userSignOut();
     _isSignIn = !_isSignIn;
-    notifyListeners();
+    _checkAuthentication();
   }
 
   Future<void> signIn(String email, String pass) async {

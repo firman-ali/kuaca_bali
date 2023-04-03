@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kuaca_bali/common/colors.dart';
 
 class PageBar extends StatelessWidget {
   const PageBar(
@@ -29,8 +28,10 @@ class PageBar extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: const Icon(Icons.arrow_back_ios_new,
-                            color: onBackground),
+                        icon: Icon(
+                          Icons.arrow_back_ios_new,
+                          color: Theme.of(context).buttonColor,
+                        ),
                       ),
                 Text(
                   title,

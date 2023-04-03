@@ -65,6 +65,10 @@ class _AdddItemSellerState extends State<AdddItemSeller> {
                                           borderRadius:
                                               BorderRadius.circular(100),
                                         ),
+                                        child: const Icon(
+                                          Icons.image_outlined,
+                                          size: 100,
+                                        ),
                                       )
                                     : Container(
                                         height: 200,
@@ -175,13 +179,16 @@ class _AdddItemSellerState extends State<AdddItemSeller> {
                       margin: const EdgeInsets.only(
                           left: 20.0, right: 20.0, top: 10.0, bottom: 20.0),
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_multiSelectKey.currentState!.validate()) {
-                            snapshot.addItem(
+                            final result = await snapshot.addItem(
                               _dressNameController.text,
                               int.parse(_priceController.text),
                               _descriptionController.text,
                             );
+                            if (result == 'success') {
+                              Navigator.pop(context);
+                            }
                           }
                         },
                         child: const Text('Buat Dagangan'),

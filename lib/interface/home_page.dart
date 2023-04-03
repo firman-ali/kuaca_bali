@@ -29,59 +29,71 @@ class HomePage extends StatelessWidget {
             height: MediaQuery.of(context).size.height / 5.5,
             color: primary600.withOpacity(0.15),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                const HomeBar(),
-                const SizedBox(height: 15),
-                filterBody(),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: Consumer<HomeProvider>(
-                    builder: (context, snapshot, child) {
-                      if (snapshot.state == ResultState.isLoading) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (snapshot.state == ResultState.hasData) {
-                        return CustomScrollView(
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    const HomeBar(),
+                    const SizedBox(height: 15),
+                    filterBody(),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Consumer<HomeProvider>(
+                  builder: (context, snapshot, child) {
+                    if (snapshot.state == ResultState.isLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.state == ResultState.hasData) {
+                      return RefreshIndicator(
+                        onRefresh: () => snapshot.refreshData(),
+                        child: CustomScrollView(
                           slivers: [
                             SliverToBoxAdapter(
                               child: Column(
                                 children: [
                                   titleBarWidget(context),
-                                  const SizedBox(height: 10),
                                 ],
                               ),
                             ),
-                            SliverGrid(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) =>
-                                    gridItemWidget(context, snapshot, index),
-                                childCount: snapshot.listData.length,
+                            SliverPadding(
+                              sliver: SliverGrid(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) =>
+                                      gridItemWidget(context, snapshot, index),
+                                  childCount: snapshot.listData.length,
+                                ),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 10.0,
+                                  mainAxisSpacing: 15.0,
+                                  childAspectRatio: 0.8,
+                                ),
                               ),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 10.0,
-                                mainAxisSpacing: 20.0,
-                                childAspectRatio: 0.8,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15.0,
+                                vertical: 10.0,
                               ),
                             ),
                           ],
-                        );
-                      } else {
-                        return const Center(
-                          child: Text('Error'),
-                        );
-                      }
-                    },
-                  ),
+                        ),
+                      );
+                    } else {
+                      return const Center(
+                        child: Text('Error'),
+                      );
+                    }
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
@@ -128,6 +140,7 @@ class HomePage extends StatelessWidget {
     return MultiSelectChipDisplay<Map<String, String>>(
       height: 50,
       scroll: true,
+      chipColor: primary100,
       textStyle:
           Theme.of(context).textTheme.caption?.copyWith(color: secondary),
       items: snapshot.filterSelected
@@ -141,11 +154,19 @@ class HomePage extends StatelessWidget {
       context: context,
       builder: (contex) {
         return MultiSelectDialog<Map<String, String>>(
+          backgroundColor: surface,
           title: Text(
             'Pilih Kategori Filter',
-            style: Theme.of(context).textTheme.subtitle1,
+            style: Theme.of(context)
+                .textTheme
+                .subtitle1
+                ?.copyWith(color: onSurface),
           ),
           searchHint: 'Cari Kategori Filter',
+          searchHintStyle:
+              Theme.of(context).textTheme.subtitle1?.copyWith(color: onSurface),
+          searchTextStyle:
+              Theme.of(context).textTheme.subtitle1?.copyWith(color: onSurface),
           height: 200,
           items: provider.filterItem
               .map((e) =>
@@ -161,17 +182,20 @@ class HomePage extends StatelessWidget {
   }
 
   Widget titleBarWidget(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          flex: 2,
-          child: Text(
-            'Cari Busana Adat Impianmu',
-            style: Theme.of(context).textTheme.headline6,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              'Cari Busana Adat Impianmu',
+              style: Theme.of(context).textTheme.headline6,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

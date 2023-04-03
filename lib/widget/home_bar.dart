@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/interface/search_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
@@ -63,11 +62,13 @@ class HomeBar extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        Text('Welcome, User',
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle1
-                                ?.copyWith(fontWeight: FontWeight.bold)),
+                        Text(
+                          'Welcome, User',
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
                       ],
                     );
                   }
@@ -87,7 +88,6 @@ class HomeBar extends StatelessWidget {
                     icon: const Icon(
                       Icons.search,
                       size: 35,
-                      color: onSurface,
                     ),
                   ),
                   const MenuButtonHome()

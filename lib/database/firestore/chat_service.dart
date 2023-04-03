@@ -48,7 +48,7 @@ class ChatService {
     });
   }
 
-  Future<void> createRoomChat(String userId, String friendId) async {
+  Future<String> createRoomChat(String userId, String friendId) async {
     final chatRoom = await _collectionChat.add({
       "users": [userId, friendId],
       "createdAt": Timestamp.now()
@@ -59,6 +59,8 @@ class ChatService {
         .collection("chats")
         .doc(chatRoom.id)
         .set({"friendId": friendId, "unRead": 0, "updatedAt": Timestamp.now()});
+
+    return chatRoom.id;
   }
 
   Future<void> readMsg(String uId, String roomId, friendId) async {
@@ -69,9 +71,18 @@ class ChatService {
         .set({"friendId": friendId, "unRead": 0, "updatedAt": Timestamp.now()});
   }
 
-  Future<String?> getRoomFromUser(String uId) async {
-    final snapshot =
-        await _collectionChat.where('users', arrayContains: uId).get();
+  Future<String?> getRoomFromUser(String friendId, String uId) async {
+    QuerySnapshot<Map<String, dynamic>>? snapshot;
+    snapshot = await _collectionChat
+        .where('users', isEqualTo: [friendId, uId])
+        .limit(1)
+        .get();
+    if (snapshot.docs.isEmpty) {
+      snapshot = await _collectionChat
+          .where('users', isEqualTo: [uId, friendId])
+          .limit(1)
+          .get();
+    }
     if (snapshot.docs.isNotEmpty) {
       return snapshot.docs.first.id;
     }

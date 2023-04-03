@@ -65,11 +65,17 @@ class _RegisterPageState extends State<RegisterPage> {
                         children: [
                           Text(
                             'Buat Akun Baru',
-                            style: Theme.of(context).textTheme.headline3,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline3
+                                ?.copyWith(color: onPrimaryBlack),
                           ),
                           Text(
                             'Buat akun kuacamu untuk melihat kumpulan busana adat yang keren',
-                            style: Theme.of(context).textTheme.subtitle1,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1
+                                ?.copyWith(color: onPrimaryBlack),
                           )
                         ],
                       ),
@@ -147,7 +153,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => PageRouter()));
+                                      builder: (context) =>
+                                          const PageRouter()));
                             }
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -165,7 +172,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           const TextSpan(text: haveAccount),
                           TextSpan(
                             text: loginLabel,
-                            style: const TextStyle(color: secondary),
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2
+                                ?.copyWith(color: secondary),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.pushReplacementNamed(
@@ -173,7 +183,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               },
                           ),
                         ],
-                        style: Theme.of(context).textTheme.caption,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle2
+                            ?.copyWith(color: onSurface),
                       ),
                     ),
                   ),

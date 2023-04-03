@@ -6,7 +6,6 @@ import 'package:kuaca_bali/database/firestore/db_service.dart';
 import 'package:kuaca_bali/helper/page_navigation_helper.dart';
 import 'package:kuaca_bali/helper/state_helper.dart';
 import 'package:kuaca_bali/interface/login_page.dart';
-import 'package:kuaca_bali/interface/lupa_pass.dart';
 import 'package:kuaca_bali/interface/register_page.dart';
 import 'package:kuaca_bali/interface/welcome_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
@@ -15,7 +14,6 @@ import 'package:kuaca_bali/provider/cart_provider.dart.dart';
 import 'package:kuaca_bali/provider/home_provider.dart';
 import 'package:kuaca_bali/widget/loading.dart';
 import 'package:provider/provider.dart';
-
 import 'common/style.dart';
 
 void main() async {
@@ -72,7 +70,6 @@ class MyApp extends StatelessWidget {
           WelcomePage.routeName: (_) => const WelcomePage(),
           LoginPage.routeName: (_) => const LoginPage(),
           RegisterPage.routeName: (_) => const RegisterPage(),
-          LupapassPage.routeName: (_) => const LupapassPage(),
         },
       ),
     );
