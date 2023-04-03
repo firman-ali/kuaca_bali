@@ -289,6 +289,7 @@ class DatabaseService {
         "orderedAt": Timestamp.now(),
         "paymentMethod": paymentMethod,
         "totalPayment": totalPayment,
+        "status": 0
       },
     );
 
@@ -325,7 +326,8 @@ class DatabaseService {
       final snapOrder = await _collectionOrderData.doc(e.id).get();
       final snapOrderedItems =
           await _collectionOrderData.doc(e.id).collection('oderedItems').get();
-
+      print(snapOrder["status"]);
+      // if (snapOrder["status"] == 1) {
       for (var items in snapOrderedItems.docs) {
         final snapDressData =
             await _collectionDressData.doc(items['dressId']).get();
@@ -342,6 +344,7 @@ class DatabaseService {
           ),
         );
       }
+      // }
     }
     return listOrderItems;
   }

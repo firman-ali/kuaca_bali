@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/common/constant.dart';
 import 'package:kuaca_bali/helper/page_navigation_helper.dart';
+import 'package:kuaca_bali/interface/lupa_pass.dart';
 import 'package:kuaca_bali/interface/register_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
 import 'package:kuaca_bali/widget/custom_form_field.dart';
@@ -69,7 +70,10 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: passLabel,
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, LupapassPage.routeName);
+                          },
                           child: Text(
                             forgetPassLabel,
                             style: GoogleFonts.publicSans(

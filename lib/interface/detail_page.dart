@@ -65,7 +65,6 @@ class DetailPage extends StatelessWidget {
                                   elevation: 5,
                                   borderRadius: BorderRadius.circular(10),
                                   child: ListTile(
-                                    style: ListTileStyle.drawer,
                                     title: Text(
                                       'Belum Ada Review',
                                       style:

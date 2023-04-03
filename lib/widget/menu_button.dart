@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kuaca_bali/common/colors.dart';
 import 'package:kuaca_bali/database/auth/auth_service.dart';
 import 'package:kuaca_bali/database/firestore/chat_service.dart';
+import 'package:kuaca_bali/interface/daftar_pesanan.dart';
 import 'package:kuaca_bali/interface/history_page.dart';
 import 'package:kuaca_bali/provider/auth_provider.dart';
 import 'package:kuaca_bali/provider/bookmark_provider.dart';
@@ -50,7 +51,8 @@ class MenuButtonCart extends StatelessWidget {
   static Set<String> item = {
     'Riwayat Pesanan',
     'Bersihkan Keranjang',
-    'Logout'
+    'Logout',
+    'Daftar Pesanan'
   };
 
   @override
@@ -89,6 +91,10 @@ class PopMenuButton extends StatelessWidget {
             break;
           case "Logout":
             Provider.of<AuthProvider>(context, listen: false).signOut();
+            break;
+          case "Daftar Pesanan":
+            pushNewScreen(context,
+                screen: const DaftarPage(), withNavBar: false);
             break;
           default:
         }
